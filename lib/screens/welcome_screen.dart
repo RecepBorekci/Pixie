@@ -1,78 +1,80 @@
-import 'package:flutter/material.dart';
-import 'package:photo_editor/screens/photo_selecting_screen.dart';
-import 'package:photo_editor/screens/settings_screen.dart';
+import 'dart:io';
 
-class WelcomeScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:image_picker/image_picker.dart';
+
+import './settings_screen.dart';
+import '../widgets/home_buttons.dart';
+
+class WelcomeScreen extends StatefulWidget {
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
   final List<Icon> recentImages = [Icon(Icons.add)];
+
+  File? image;
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      this.image = imageTemporary;
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print("Failed to pick image: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Row(
-          children: [
-            Icon(Icons.menu),
-            Icon(Icons.camera_alt),
-          ],
-        ),
+        leading: Icon(Icons.menu),
         title: Text('Pixie'),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SettingsScreen();
-                }));
-              },
-              icon: Icon(Icons.settings))
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Recent photos: '),
-                // ListView(
-                //   scrollDirection: Axis.vertical,
-                //   children: recentImages,
-                // )
-              ],
-            ),
-            Row(
-              children: [
-                ElevatedButton(
-                  child: Text('Go to selecting screen.'),
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.photo_camera,
+                  )),
+              IconButton(
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return PhotoSelectingScreen();
+                      return SettingsScreen();
                     }));
                   },
-                ),
-                ElevatedButton(
-                    onPressed: () {},
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.camera_alt,
-                          size: 100,
-                        ),
-                        Text('Camera'),
-                      ],
-                    ))
-              ],
+                  icon: Icon(Icons.settings)),
+            ],
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            HomeButton(
+              onPressed: pickImage,
+              icon: Icons.photo,
+              text: "Gallery",
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.pink,
             ),
-            ElevatedButton(
+            HomeButton(
               onPressed: () {},
-              child: Text('Go to edit video screen. (Does not exist yet)'),
+              icon: Icons.photo_camera,
+              text: "Camera",
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.cyan,
             ),
-            Row(
-              children: [],
-            )
           ],
         ),
       ),
