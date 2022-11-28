@@ -5,7 +5,7 @@ import 'package:photo_editor/screens/photo_editing_screen.dart';
 class PhotoSelectingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea(
       child: Column(
         children: [
           ElevatedButton(
