@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_editor/screens/photo_selecting_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class WelcomeScreen extends StatelessWidget {
           child: Text('Go to selecting screen.'),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Text('');
+              return PhotoSelectingScreen();
             }));
           },
         ),
