@@ -5,6 +5,23 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            ElevatedButton(onPressed: () {}, child: Text('Language')),
+            Column(
+              children: [
+                Text(
+                  'Version',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text('0.1')
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
