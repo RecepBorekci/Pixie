@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_editor/screens/photo_editing_screen.dart';
 
 import './settings_screen.dart';
 import '../widgets/home_buttons.dart';
@@ -58,23 +59,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
           children: [
-            HomeButton(
-              onPressed: pickImage,
-              icon: Icons.photo,
-              text: "Gallery",
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.pink,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                HomeButton(
+                  onPressed: pickImage,
+                  icon: Icons.photo,
+                  text: "Gallery",
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.pink,
+                ),
+                HomeButton(
+                  onPressed: () {},
+                  icon: Icons.photo_camera,
+                  text: "Camera",
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.cyan,
+                ),
+              ],
             ),
-            HomeButton(
-              onPressed: () {},
-              icon: Icons.photo_camera,
-              text: "Camera",
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.cyan,
-            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return PhotoEditingScreen();
+                }));
+              },
+              child: Text('Go to editing screen.'),
+            )
           ],
         ),
       ),
