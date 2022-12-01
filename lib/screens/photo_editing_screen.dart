@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 class PhotoEditingScreen extends StatefulWidget {
-  const PhotoEditingScreen({Key? key, required this.image}) : super(key: key);
   final File? image;
+  const PhotoEditingScreen({Key? key, required this.image}) : super(key: key);
+
   @override
   State<PhotoEditingScreen> createState() => _PhotoEditingScreenState();
 }
