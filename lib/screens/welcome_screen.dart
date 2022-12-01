@@ -26,6 +26,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       final imageTemporary = File(image.path);
       this.image = imageTemporary;
       setState(() => this.image = imageTemporary);
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return PhotoEditingScreen();
+      }));
     } on PlatformException catch (e) {
       print("Failed to pick image: $e");
     }
@@ -61,7 +65,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 0),
         child: Column(
           children: [
-            if (image != null) Image.file(image!),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
