@@ -39,55 +39,60 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.menu),
-        title: Text('Pixie'),
-        actions: [
-          Row(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: IconButton(
                   onPressed: () {},
                   icon: Icon(
-                    Icons.photo_camera,
-                  )),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return SettingsScreen();
-                    }));
-                  },
-                  icon: Icon(Icons.settings)),
+                    Icons.menu,
+                    size: 30,
+                  ),
+                  color: Colors.grey,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(25, 20, 0, 0),
+                child: Text(
+                  "Pixie",
+                  style: TextStyle(
+                      fontFamily: "Courgette",
+                      fontSize: 40,
+                      color: Color.fromRGBO(54, 54, 54, 1),
+                      fontWeight: FontWeight.w900),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  HomeButton(
+                    onPressed: pickImage,
+                    source: ImageSource.gallery,
+                    icon: Icons.photo,
+                    text: "Gallery",
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.pink,
+                  ),
+                  HomeButton(
+                    onPressed: pickImage,
+                    source: ImageSource.camera,
+                    icon: Icons.photo_camera,
+                    text: "Camera",
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.cyan,
+                  ),
+                ],
+              ),
             ],
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                HomeButton(
-                  onPressed: pickImage,
-                  source: ImageSource.gallery,
-                  icon: Icons.photo,
-                  text: "Gallery",
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.pink,
-                ),
-                HomeButton(
-                  onPressed: pickImage,
-                  source: ImageSource.camera,
-                  icon: Icons.photo_camera,
-                  text: "Camera",
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.cyan,
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
