@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+class PhotoEditingScreen extends StatefulWidget {
+  const PhotoEditingScreen({Key? key, required this.image}) : super(key: key);
+  final File? image;
+  @override
+  State<PhotoEditingScreen> createState() => _PhotoEditingScreenState();
+}
 
-
-class PhotoEditingScreen extends StatelessWidget {
+class _PhotoEditingScreenState extends State<PhotoEditingScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Editing Page'),
-          centerTitle: true,
-        ),
-        body: GestureDetector(
-
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text("Selected photos come here"
-                  "crop widget eklenecek"
-                  "contrast widget etc etc"), Icon(Icons.edit)],
-            ),
-          ),
-        ),
-      ),
+    return Scaffold(
+      body: Image.file(widget.image!),
     );
   }
-  }
+}
