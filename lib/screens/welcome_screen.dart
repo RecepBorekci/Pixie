@@ -8,6 +8,7 @@ import 'package:photo_editor/screens/photo_editing_screen.dart';
 
 import './settings_screen.dart';
 import '../widgets/home_buttons.dart';
+import 'completely_unnecessary_opening_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -87,6 +88,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ],
             ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return Image(image: );
+                // }));
+              },
+              child: Text('Go to editing screen.'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CompletelyUnnecessaryOpeningScreen();
+                }));
+              },
+              child: Text('Go to opening screen.'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return Image(image: );
+                // }));
+              },
+              child: Text('Go to editing screen.'),
+            )
           ],
         ),
       ),

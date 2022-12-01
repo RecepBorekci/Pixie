@@ -14,7 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Palette.purpleLight),
+      theme: ThemeData(
+        primarySwatch: Palette.purpleLight,
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.deepPurpleAccent,
+        ),
+      ),
       home: WelcomeScreen(),
     );
   }
