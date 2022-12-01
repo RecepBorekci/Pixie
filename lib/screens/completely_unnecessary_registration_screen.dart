@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:photo_editor/screens/welcome_screen.dart';
 
 class CompletelyUnnecessaryRegistrationScreen extends StatefulWidget {
   const CompletelyUnnecessaryRegistrationScreen({Key? key}) : super(key: key);
@@ -14,6 +16,17 @@ class _CompletelyUnnecessaryRegistrationScreenState
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    Firebase.initializeApp().whenComplete(() {
+      print("completed");
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +98,23 @@ class _CompletelyUnnecessaryRegistrationScreenState
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  final user = await _auth.createUserWithEmailAndPassword(
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
+                  if (user != null) {
+                    print('success');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return WelcomeScreen();
+                    }));
+                  }
+                } catch (e) {
+                  print('error');
+                }
+              },
               child: Text('Register'),
             ),
           ],

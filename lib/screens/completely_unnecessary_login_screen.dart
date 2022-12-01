@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:photo_editor/screens/welcome_screen.dart';
 
 class CompletelyUnnecessaryLoginScreen extends StatefulWidget {
   const CompletelyUnnecessaryLoginScreen({Key? key}) : super(key: key);
@@ -13,6 +14,8 @@ class _CompletelyUnnecessaryLoginScreenState
     extends State<CompletelyUnnecessaryLoginScreen> {
   final emailOrUsernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +67,22 @@ class _CompletelyUnnecessaryLoginScreenState
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                try {
+                  final user = _auth.signInWithEmailAndPassword(
+                    email: emailOrUsernameController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
+                  if (user != null) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return WelcomeScreen();
+                    }));
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
               child: Text('Log in'),
             ),
           ],
