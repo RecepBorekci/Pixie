@@ -23,11 +23,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     appBar: AppBar(
       title: Text('Editing Page'),
       leading: IconButton(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Editing Page'),
+        leading: IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) {
-                    return WelcomeScreen();
-                  }));
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return WelcomeScreen();
+              }));
             },
             icon: Icon(Icons.arrow_back)),
       actions: [
@@ -42,6 +45,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     ),
 
 
+      ),
       backgroundColor: Colors.black,
 
       body: SingleChildScrollView(

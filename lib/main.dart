@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:photo_editor/screens/completely_unnecessary_login_screen.dart';
+import 'package:photo_editor/screens/completely_unnecessary_opening_screen.dart';
+import 'package:photo_editor/screens/completely_unnecessary_registration_screen.dart';
+import 'package:photo_editor/screens/photo_editing_screen.dart';
+import 'package:photo_editor/screens/settings_screen.dart';
 
 import './models/palette.dart';
 
@@ -16,9 +22,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Palette.purpleLight,
-        fontFamily: "Montserrat",
+        fontFamily: "Nunito",
       ),
-      home: WelcomeScreen(),
+      home: CompletelyUnnecessaryOpeningScreen(),
+      routes: {
+        '/opening': (context) => CompletelyUnnecessaryOpeningScreen(),
+        '/login': (context) => CompletelyUnnecessaryLoginScreen(),
+        '/registration': (context) => CompletelyUnnecessaryRegistrationScreen(),
+        '/welcome': (context) => WelcomeScreen(),
+        // '/editing': (context) => PhotoEditingScreen(),
+        '/settings': (context) => SettingsScreen(),
+      },
     );
   }
 }
