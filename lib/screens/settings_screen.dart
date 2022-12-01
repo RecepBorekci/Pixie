@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:photo_editor/screens/completely_unnecessary_opening_screen.dart';
@@ -15,7 +16,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-
     getCurrentUser();
   }
 
@@ -43,8 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: () {
                     _auth.signOut();
                     // Log out button doesn't work yet. Don't press it.
-                    Navigator.popUntil(
-                        context, ModalRoute.withName('/welcome'));
+                    Navigator.of(context).popAndPushNamed('/opening');
                   },
                   child: Text('Log Out'),
                 ),
