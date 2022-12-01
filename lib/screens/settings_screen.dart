@@ -42,10 +42,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ElevatedButton(
                   onPressed: () {
                     _auth.signOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return CompletelyUnnecessaryOpeningScreen();
-                    }));
+                    // Log out button doesn't work yet. Don't press it.
+                    Navigator.popUntil(
+                        context, ModalRoute.withName('/welcome'));
                   },
                   child: Text('Log Out'),
                 ),

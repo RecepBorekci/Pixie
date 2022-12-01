@@ -16,25 +16,19 @@ class PhotoEditingScreen extends StatefulWidget {
 class _PhotoEditingScreenState extends EditImageViewModel {
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-
-    appBar: AppBar(
-      title: Text('Editing Page'),
-      leading:
-        IconButton(
+A    return Scaffold(
+      appBar: AppBar(
+        title: Text('Editing Page'),
+        leading: IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) {
-                    return WelcomeScreen();
-                  }));
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return WelcomeScreen();
+              }));
             },
             icon: Icon(Icons.arrow_back)),
-    ),
-
+      ),
       backgroundColor: Colors.black,
-
       body: SingleChildScrollView(
-
         child: Column(
           children: [
             const SizedBox(
@@ -47,10 +41,10 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             const Text(
               'API Features Down Here',
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                color: Colors.white),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white),
               textAlign: TextAlign.center,
             ),
             const SizedBox(
@@ -59,42 +53,37 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             Container(
               height: 150,
               child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context,index){
-                  return Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(20.0),
-                          margin: EdgeInsets.only(left:30),
-                          decoration: BoxDecoration(
-                            color: Colors.deepOrangeAccent,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(20.0),
+                            margin: EdgeInsets.only(left: 30),
+                            decoration: BoxDecoration(
+                              color: Colors.deepOrangeAccent,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
             ),
-
           ],
         ),
       ),
-
-
-
     );
   }
 
   Widget get _addnewTextFab => FloatingActionButton(
-      onPressed: () => addNewDialog(context),
-    backgroundColor: Colors.white,
-    tooltip: 'Add New Text',
-    child: const Icon(
-     Icons.edit,
-      color: Colors.black,
-    ),
-  );
-
+        onPressed: () => addNewDialog(context),
+        backgroundColor: Colors.white,
+        tooltip: 'Add New Text',
+        child: const Icon(
+          Icons.edit,
+          color: Colors.black,
+        ),
+      );
 }
