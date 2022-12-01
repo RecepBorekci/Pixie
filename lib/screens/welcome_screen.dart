@@ -26,9 +26,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       final imageTemporary = File(image.path);
       this.image = imageTemporary;
       setState(() => this.image = imageTemporary);
-
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PhotoEditingScreen();
+        return PhotoEditingScreen(
+          image: image,
+        );
       }));
     } on PlatformException catch (e) {
       print("Failed to pick image: $e");
@@ -86,14 +87,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return PhotoEditingScreen();
-                }));
-              },
-              child: Text('Go to editing screen.'),
-            )
           ],
         ),
       ),
