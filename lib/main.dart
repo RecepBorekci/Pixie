@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:photo_editor/screens/welcome_screen.dart';
+
+import './models/palette.dart';
+
+import './screens/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
+      theme: ThemeData(primarySwatch: Palette.purpleLight),
       home: WelcomeScreen(),
     );
   }
