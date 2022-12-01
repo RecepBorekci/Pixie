@@ -16,7 +16,7 @@ class PhotoEditingScreen extends StatefulWidget {
 class _PhotoEditingScreenState extends EditImageViewModel {
   @override
   Widget build(BuildContext context) {
-A    return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('Editing Page'),
         leading: IconButton(

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Palette.purpleLight,
-        fontFamily: "Montserrat",
+        fontFamily: "Nunito",
       ),
       home: CompletelyUnnecessaryOpeningScreen(),
       routes: {

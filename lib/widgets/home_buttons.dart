@@ -25,14 +25,14 @@ class HomeButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all<Color>(backgroundColor)),
       child: MediaQuery.of(context).orientation == Orientation.portrait
           ? Container(
-              height: MediaQuery.of(context).size.width * 0.27,
-              width: MediaQuery.of(context).size.width * 0.20,
+              height: MediaQuery.of(context).size.width * 0.30,
+              width: MediaQuery.of(context).size.width * 0.32,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Icon(
                     icon,
-                    size: 50,
+                    size: MediaQuery.of(context).size.width * 0.14,
                   ),
                   Text(
                     "$text",

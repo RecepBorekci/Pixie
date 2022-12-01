@@ -39,39 +39,39 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 0),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.menu,
-                    size: 30,
-                  ),
-                  color: Colors.grey,
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.menu,
+                  size: 30,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(25, 20, 0, 0),
-                child: Text(
-                  "Pixie",
-                  style: TextStyle(
-                      fontFamily: "Courgette",
-                      fontSize: 40,
-                      color: Color.fromRGBO(54, 54, 54, 1),
-                      fontWeight: FontWeight.w900),
-                ),
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                color: Colors.grey,
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.10,
+                height: MediaQuery.of(context).size.height * 0.04,
+              ),
+              Text(
+                "Pixie",
+                style: TextStyle(
+                    fontFamily: "Courgette",
+                    fontSize: 40,
+                    color: Color.fromRGBO(54, 54, 54, 1),
+                    fontWeight: FontWeight.w900),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   HomeButton(
                     onPressed: pickImage,
