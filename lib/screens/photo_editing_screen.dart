@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 import 'dart:io';
-
+import 'package:permission_handler/permission_handler.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_editor/widgets/edit_image_viewmodel.dart';
 
 class PhotoEditingScreen extends StatefulWidget {
@@ -20,8 +22,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 
     appBar: AppBar(
       title: Text('Editing Page'),
-      leading:
-        IconButton(
+      leading: IconButton(
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) {
@@ -29,21 +30,29 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   }));
             },
             icon: Icon(Icons.arrow_back)),
+      actions: [
+        IconButton(
+          icon: const Icon(
+            Icons.save,
+            color: Colors.black,
+          ), onPressed: () => saveToGallery(context),
+          tooltip: 'Save Image',
+        )
+      ],
     ),
+
 
       backgroundColor: Colors.black,
 
       body: SingleChildScrollView(
+        child: Screenshot(
+          controller: screenshotController,
 
         child: Column(
           children: [
-            const SizedBox(
-              height: 150,
-            ),
+
             Image.file(File(widget.image.path)),
-            const SizedBox(
-              height: 150,
-            ),
+
             const Text(
               'API Features Down Here',
               style: TextStyle(
@@ -83,6 +92,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       ),
 
 
+      ),
 
     );
   }
