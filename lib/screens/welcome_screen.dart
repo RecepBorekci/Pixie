@@ -18,9 +18,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   final List<Icon> recentImages = [Icon(Icons.add)];
 
   File? image;
-  Future pickImage() async {
+  Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
 
       final imageTemporary = File(image.path);
@@ -67,13 +67,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               children: [
                 HomeButton(
                   onPressed: pickImage,
+                  source: ImageSource.gallery,
                   icon: Icons.photo,
                   text: "Gallery",
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.pink,
                 ),
                 HomeButton(
-                  onPressed: () {},
+                  onPressed: pickImage,
+                  source: ImageSource.camera,
                   icon: Icons.photo_camera,
                   text: "Camera",
                   foregroundColor: Colors.white,
