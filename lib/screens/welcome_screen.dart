@@ -61,6 +61,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 0),
         child: Column(
           children: [
+            if (image != null) Image.file(image!),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
