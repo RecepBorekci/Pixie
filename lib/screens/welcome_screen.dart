@@ -47,7 +47,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/settings');
+                },
                 icon: Icon(
                   Icons.menu,
                   size: 30,
