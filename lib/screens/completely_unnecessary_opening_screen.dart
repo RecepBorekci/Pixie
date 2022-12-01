@@ -10,34 +10,38 @@ class CompletelyUnnecessaryOpeningScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CompletelyUnnecessaryLoginScreen();
-              }));
-            },
-            child: Text('Log In'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CompletelyUnnecessaryRegistrationScreen();
-              }));
-            },
-            child: Text('Register'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return WelcomeScreen();
-              }));
-            },
-            child: Text('Go to Welcome Screen'),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CompletelyUnnecessaryLoginScreen();
+                }));
+              },
+              child: Text('Log In'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CompletelyUnnecessaryRegistrationScreen();
+                }));
+              },
+              child: Text('Register'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return WelcomeScreen();
+                }));
+              },
+              child: Text('Go to Welcome Screen'),
+            ),
+          ],
+        ),
       ),
     );
   }

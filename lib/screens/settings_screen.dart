@@ -43,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: () {
                     _auth.signOut();
                     // Log out button doesn't work yet. Don't press it.
-                    Navigator.of(context).popAndPushNamed('/opening');
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                   },
                   child: Text('Log Out'),
                 ),
