@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_editor/screens/completely_unnecessary_opening_screen.dart';
 import 'package:photo_editor/screens/photo_editing_screen.dart';
 
 import './settings_screen.dart';
@@ -27,9 +28,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       this.image = imageTemporary;
       setState(() => this.image = imageTemporary);
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PhotoEditingScreen();
-      }));
+      // Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //   return PhotoEditingScreen();
+      // }));
     } on PlatformException catch (e) {
       print("Failed to pick image: $e");
     }
@@ -51,10 +52,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   )),
               IconButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return SettingsScreen();
-                    }));
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) {
+                    //   return SettingsScreen();
+                    // }));
                   },
                   icon: Icon(Icons.settings)),
             ],
@@ -88,9 +89,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             ElevatedButton(
               onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return Image(image: );
+                // }));
+              },
+              child: Text('Go to editing screen.'),
+            ),
+            ElevatedButton(
+              onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return PhotoEditingScreen();
+                  return CompletelyUnnecessaryOpeningScreen();
                 }));
+              },
+              child: Text('Go to opening screen.'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return Image(image: );
+                // }));
               },
               child: Text('Go to editing screen.'),
             )

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "757957027853",
+    "project_id": "photo-editor-1ab08",
+    "storage_bucket": "photo-editor-1ab08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757957027853:android:4eb5647710d282e930cd44",
+        "android_client_info": {
+          "package_name": "com.RecepBorekci.photo_editor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757957027853-l8h3mcpj1fuv73c5qvvdbb41pd49ol5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDiMIdzgeclCOvqIv1h19B4AqB3t5w9Gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757957027853-l8h3mcpj1fuv73c5qvvdbb41pd49ol5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
