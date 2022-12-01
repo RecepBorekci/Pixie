@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HomeButton extends StatelessWidget {
   Function onPressed;
   IconData icon;
   String text;
   Color foregroundColor, backgroundColor;
+  ImageSource? source;
   HomeButton({
     required this.onPressed,
+    this.source,
     required this.icon,
     required this.text,
     required this.foregroundColor,
@@ -16,7 +19,7 @@ class HomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => onPressed(),
+      onPressed: source == null ? () => onPressed() : () => onPressed(source),
       style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(foregroundColor),
           backgroundColor: MaterialStateProperty.all<Color>(backgroundColor)),
