@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:photo_editor/screens/completely_unnecessary_opening_screen.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+class SettingsScreen extends StatefulWidget {
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final _auth = FirebaseAuth.instance;
+
+  late User loggedInUser;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +39,21 @@ class SettingsScreen extends StatelessWidget {
             ElevatedButton(onPressed: () {}, child: Text('Language')),
             Column(
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _auth.signOut();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return CompletelyUnnecessaryOpeningScreen();
+                    }));
+                  },
+                  child: Text('Log Out'),
+                ),
                 Text(
                   'Version',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text('0.1')
+                Text('0.2.0-alpha')
               ],
             )
           ],
