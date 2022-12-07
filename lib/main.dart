@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:photo_editor/screens/completely_unnecessary_login_screen.dart';
 import 'package:photo_editor/screens/completely_unnecessary_opening_screen.dart';
 import 'package:photo_editor/screens/completely_unnecessary_registration_screen.dart';

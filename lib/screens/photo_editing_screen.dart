@@ -18,11 +18,8 @@ class PhotoEditingScreen extends StatefulWidget {
 class _PhotoEditingScreenState extends EditImageViewModel {
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
+    Image newImage = Image.asset('temporary_image/flower.jpeg');
 
-    appBar: AppBar(
-      title: Text('Editing Page'),
-      leading: IconButton(
     return Scaffold(
       appBar: AppBar(
         title: Text('Editing Page'),
