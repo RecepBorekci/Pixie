@@ -67,17 +67,17 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             ElevatedButton(
               onPressed: () async {
                 // TODO: DO NOT uncomment lines below until these are added to the buttons.
-                // Uint8List bytes =
-                //     await featuresHelper.removeBackground(widget.image.path);
-                //
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return ApiTestScreen(
-                //     Image.memory(
-                //       bytes,
-                //       fit: BoxFit.cover,
-                //     ),
-                //   );
-                // }));
+                Uint8List bytes =
+                    await featuresHelper.removeBackground(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    Image.memory(
+                      bytes,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }));
               },
               child: Text('DO NOT Press Me!!!'),
             ),

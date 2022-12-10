@@ -32,27 +32,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            ElevatedButton(onPressed: () {}, child: Text('Language')),
-            Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    _auth.signOut();
-                    // Log out button doesn't work yet. Don't press it.
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                  child: Text('Log Out'),
+        body: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ElevatedButton(onPressed: () {}, child: Text('Language')),
+              ElevatedButton(
+                onPressed: () {
+                  _auth.signOut();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                child: Text('Log Out'),
+              ),
+              Text(
+                'Version',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  'Version',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text('0.2.0-alpha')
-              ],
-            )
-          ],
+              ),
+              Text('0.5.0-alpha')
+            ],
+          ),
         ),
       ),
     );
