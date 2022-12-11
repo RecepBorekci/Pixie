@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_editor/screens/completely_unnecessary_login_screen.dart';
-import 'package:photo_editor/screens/completely_unnecessary_opening_screen.dart';
-import 'package:photo_editor/screens/completely_unnecessary_registration_screen.dart';
+import 'package:photo_editor/screens/login_screen.dart';
+import 'package:photo_editor/screens/opening_screen.dart';
+import 'package:photo_editor/screens/registration_screen.dart';
 import 'package:photo_editor/screens/photo_editing_screen.dart';
 
 import './models/palette.dart';
