@@ -16,4 +16,7 @@ class Palette {
       900: const Color(0xffffffff), //100%
     },
   );
+  static const Color appBackground = Color.fromRGBO(242, 242, 242, 1);
+  static const Color appBackgroundDark = Color.fromRGBO(232, 232, 232, 1);
+  static const Color darkTextColor = Color.fromRGBO(54, 54, 54, 1);
 }
