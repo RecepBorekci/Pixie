@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class ApiTestScreen extends StatefulWidget {
@@ -14,9 +16,10 @@ class _ApiTestScreenState extends State<ApiTestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [widget.originalImage, widget.testImage],
+      body: SafeArea(
+        child: Column(
+          children: [widget.originalImage, widget.testImage],
+        ),
       ),
     );
   }
