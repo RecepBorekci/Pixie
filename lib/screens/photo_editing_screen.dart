@@ -81,67 +81,82 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 ],
               ),
             ),
-
-            // TODO: DO NOT uncomment lines below until these are added to the buttons. This is backgroundRemoval.
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     Uint8List bytes =
-            //         await featuresHelper.removeBackground(widget.image.path);
-            //
-            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //       return ApiTestScreen(
-            //         originalImage: Image.file(File(widget.image.path)),
-            //         testImage: Image.memory(
-            //           bytes,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       );
-            //     }));
-            //   },
-            //   child: Text('DO NOT Press Me!!! I am background remover'),
-            // ),
-            // TODO: Do not uncomment this button. This is face cutout.
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     Uint8List bytes =
-            //         await featuresHelper.cutoutFace(widget.image.path);
-            //
-            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //       return ApiTestScreen(
-            //         originalImage: Image.file(File(widget.image.path)),
-            //         testImage: Image.memory(
-            //           bytes,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       );
-            //     }));
-            //   },
-            //   child: Text('DO NOT Press Me!!! I am face cutout'),
-            // ),
-            // TODO: Do not uncomment this button. This is color correction.
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     Uint8List bytes =
-            //         await featuresHelper.correctColor(widget.image.path);
-            //
-            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //       return ApiTestScreen(
-            //         originalImage: Image.file(File(widget.image.path)),
-            //         testImage: Image.memory(
-            //           bytes,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       );
-            //     }));
-            //   },
-            //   child: Text('DO NOT Press Me!!! I am color correction.'),
-            // ),
           ],
         ),
       ),
     );
   }
 }
+
+// TODO: DO NOT uncomment lines below until these are added to the buttons. This is for backgroundRemoval.
+// ElevatedButton(
+//   onPressed: () async {
+//     Uint8List bytes =
+//         await featuresHelper.removeBackground(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: Image.memory(
+//           bytes,
+//           fit: BoxFit.cover,
+//         ),
+//       );
+//     }));
+//   },
+//   child: Text('DO NOT Press Me!!! I am background remover'),
+// ),
+// TODO: Do not uncomment this button. This is for face cutout.
+// ElevatedButton(
+//   onPressed: () async {
+//     Uint8List bytes =
+//         await featuresHelper.cutoutFace(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: Image.memory(
+//           bytes,
+//           fit: BoxFit.cover,
+//         ),
+//       );
+//     }));
+//   },
+//   child: Text('DO NOT Press Me!!! I am face cutout'),
+// ),
+// TODO: Do not uncomment this button. This is for color correction.
+// ElevatedButton(
+//   onPressed: () async {
+//     Uint8List bytes =
+//         await featuresHelper.correctColor(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: Image.memory(
+//           bytes,
+//           fit: BoxFit.cover,
+//         ),
+//       );
+//     }));
+//   },
+//   child: Text('DO NOT Press Me!!! I am color correction.'),
+// ),
+// TODO: Do not uncomment this button. This is for password photo.
+// ElevatedButton(
+//   onPressed: () async {
+//     Image passwordImage =
+//     await featuresHelper.passportPhoto(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: passwordImage,
+//       );
+//     }));
+//   },
+//   child: Text('DO NOT Press Me!!! I am password photo maker.'),
+// ),
 
 // SizedBox(
 //   height: 150,
