@@ -32,7 +32,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+  return Scaffold(
       appBar: AppBar(
         title: Text('Editing Page'),
         leading: IconButton(
@@ -46,16 +46,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
         IconButton(
           icon: const Icon(
             Icons.save,
-            color: Colors.black,
+            color: Colors.white,
           ), onPressed: () => saveToGallery(context),
           tooltip: 'Save Image',
         )
       ],
     ),
 
-
-      ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
 
       body: SingleChildScrollView(
         child: Screenshot(
@@ -64,20 +62,19 @@ class _PhotoEditingScreenState extends EditImageViewModel {
         child: Column(
           children: [
 
-            Image.file(File(widget.image.path)),
+            SafeArea(
+              child:
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.35,
+                child: Stack(
+                  children: [
+                    Image.file(File(widget.image.path)),
+                  ],
+                ),
+              ),
+            ),
 
-            const Text(
-              'API Features Down Here',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 50,
-            ),
+
             // TODO: DO NOT uncomment lines below until these are added to the buttons. This is backgroundRemoval.
             // ElevatedButton(
             //   onPressed: () async {
@@ -112,46 +109,44 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             //   },
             //   child: Text('DO NOT Press Me!!! I am face cutout'),
             // ),
-            Container(
-              height: 150,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context,index){
-                  return Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(20.0),
-                          margin: EdgeInsets.only(left:30),
-                          decoration: BoxDecoration(
-                            color: Colors.deepOrangeAccent,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
-            ),
+
+
+
+
+
+
+
+
+            // SizedBox(
+            //   height: 150,
+            //   child: ListView.builder(
+            //     scrollDirection: Axis.horizontal,
+            //     itemBuilder: (context,index){
+            //       return Column(
+            //         children: [
+            //           Container(
+            //             padding: EdgeInsets.all(20.0),
+            //             margin: EdgeInsets.only(left:30),
+            //             decoration: BoxDecoration(
+            //               color: Colors.deepOrangeAccent,
+            //               borderRadius: BorderRadius.circular(15),
+            //             ),
+            //           )
+            //         ],
+            //       );
+            //     }),
+            // ),
 
           ],
         ),
       ),
 
 
-      ),
+        ),
+  );
 
-    );
   }
 
-  Widget get _addnewTextFab => FloatingActionButton(
-      onPressed: () => addNewDialog(context),
-    backgroundColor: Colors.white,
-    tooltip: 'Add New Text',
-    child: const Icon(
-     Icons.edit,
-      color: Colors.black,
-    ),
-  );
+
 
 }
