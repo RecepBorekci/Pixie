@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 
-import 'completely_unnecessary_login_screen.dart';
-import 'completely_unnecessary_registration_screen.dart';
+import 'login_screen.dart';
+import 'registration_screen.dart';
 
 class CompletelyUnnecessaryOpeningScreen extends StatelessWidget {
   const CompletelyUnnecessaryOpeningScreen({Key? key}) : super(key: key);

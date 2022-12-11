@@ -1,13 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io' as Io;
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+const apiKey = '2327f560a4be4ce7a439dd770bab6128';
 
 const cutOutProUrl = 'https://www.cutout.pro/api/v1/';
 const backgroundRemoval = 'matting?mattingType=6';
 const faceCutout = 'matting?mattingType=3';
 const colorCorrection = 'matting?mattingType=4';
-const apiKey = '2327f560a4be4ce7a439dd770bab6128';
+const passportPhoto = 'idphoto/printLayout';
 
 // Class for using CutOutPro API. This class will have the methods for the features in this API.
 class CutOutProFeatures {
@@ -35,6 +40,33 @@ class CutOutProFeatures {
     }
   }
 
+  Future<http.Response> uploadImagePassportPhoto(path) async {
+    final bytes = await Io.File(path).readAsBytes();
+
+    String img64 = base64Encode(bytes);
+
+    final body = jsonEncode({
+      'base64': img64,
+      'bgColor': 'FFFFFF',
+      'dpi': 300,
+      'mmHeight': 40,
+      'mmWidth': 20,
+      'printBgColor': 'FFFFFF',
+      'printMmHeigh': 210,
+      'printMmWidth': 150
+    });
+
+    http.Response response =
+        await http.post(Uri.parse('$cutOutProUrl$passportPhoto'),
+            headers: {
+              'APIKEY': apiKey,
+              'Content-Type': 'application/json',
+            },
+            body: body);
+
+    return response;
+  }
+
   Future<dynamic> removeBackground(String path) async {
     try {
       // POST METHOD FOR APIs.
@@ -60,12 +92,6 @@ class CutOutProFeatures {
     } catch (e) {
       return Future.error(e);
     }
-
-    // Networking networkHelper = Networking(url);
-
-    // var removerData = await networkHelper.getData();
-    //
-    // return removerData;
   }
 
   Future<dynamic> cutoutFace(String path) async {
@@ -78,12 +104,19 @@ class CutOutProFeatures {
     }
   }
 
-  Future<dynamic> correctColor(String path) async {
+  Future<Image> passportPhoto(String path) async {
     try {
-      Uint8List rawImageBytes =
-          (await uploadImage(path, colorCorrection)).bodyBytes;
+      String data = (await uploadImagePassportPhoto(path)).body;
 
-      return rawImageBytes;
+      print(data);
+
+      String imageURL = jsonDecode(data)['data']['idPhotoImage'];
+
+      print(imageURL);
+
+      Image image = Image.network(imageURL);
+
+      return image;
     } catch (e) {
       return Future.error(e);
     }

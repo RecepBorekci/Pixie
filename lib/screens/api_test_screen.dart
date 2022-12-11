@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class ApiTestScreen extends StatefulWidget {
@@ -15,9 +17,8 @@ class _ApiTestScreenState extends State<ApiTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.35,
-          child: widget.testImage,
+        child: Column(
+          children: [widget.originalImage, widget.testImage],
         ),
       ),
     );
