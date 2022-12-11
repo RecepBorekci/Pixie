@@ -54,99 +54,89 @@ class _PhotoEditingScreenState extends EditImageViewModel {
         ],
       ),
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Screenshot(
-          controller: screenshotController,
-          child: Column(
-            children: [
-              SafeArea(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  child: Stack(
-                    children: [
-                      Image.file(File(widget.image.path)),
-                    ],
-                  ),
-                ),
+      body: Screenshot(
+        controller: screenshotController,
+        child: Column(
+          children: [
+            SafeArea(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.35,
+                child: Image.file(File(widget.image.path)),
               ),
+            ),
+            Expanded(
+              child: SizedBox(),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.08,
+              color: Colors.orange,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Container(
+                    color: Colors.yellow,
+                    width: 50,
+                    height: 50,
+                  )
+                ],
+              ),
+            ),
 
-              // TODO: DO NOT uncomment lines below until these are added to the buttons. This is backgroundRemoval.
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     Uint8List bytes =
-              //         await featuresHelper.removeBackground(widget.image.path);
-              //
-              //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //       return ApiTestScreen(
-              //         originalImage: Image.file(File(widget.image.path)),
-              //         testImage: Image.memory(
-              //           bytes,
-              //           fit: BoxFit.cover,
-              //         ),
-              //       );
-              //     }));
-              //   },
-              //   child: Text('DO NOT Press Me!!! I am background remover'),
-              // ),
-              // TODO: Do not uncomment this button. This is face cutout.
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     Uint8List bytes =
-              //         await featuresHelper.cutoutFace(widget.image.path);
-              //
-              //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //       return ApiTestScreen(
-              //         originalImage: Image.file(File(widget.image.path)),
-              //         testImage: Image.memory(
-              //           bytes,
-              //           fit: BoxFit.cover,
-              //         ),
-              //       );
-              //     }));
-              //   },
-              //   child: Text('DO NOT Press Me!!! I am face cutout'),
-              // ),
-              // TODO: Do not uncomment this button. This is color correction.
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     Uint8List bytes =
-              //         await featuresHelper.correctColor(widget.image.path);
-              //
-              //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //       return ApiTestScreen(
-              //         originalImage: Image.file(File(widget.image.path)),
-              //         testImage: Image.memory(
-              //           bytes,
-              //           fit: BoxFit.cover,
-              //         ),
-              //       );
-              //     }));
-              //   },
-              //   child: Text('DO NOT Press Me!!! I am color correction.'),
-              // ),
-              Container(
-                height: 150,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(20.0),
-                              margin: EdgeInsets.only(left: 30),
-                              decoration: BoxDecoration(
-                                color: Colors.deepOrangeAccent,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-              ),
-            ],
-          ),
+            // TODO: DO NOT uncomment lines below until these are added to the buttons. This is backgroundRemoval.
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     Uint8List bytes =
+            //         await featuresHelper.removeBackground(widget.image.path);
+            //
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return ApiTestScreen(
+            //         originalImage: Image.file(File(widget.image.path)),
+            //         testImage: Image.memory(
+            //           bytes,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       );
+            //     }));
+            //   },
+            //   child: Text('DO NOT Press Me!!! I am background remover'),
+            // ),
+            // TODO: Do not uncomment this button. This is face cutout.
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     Uint8List bytes =
+            //         await featuresHelper.cutoutFace(widget.image.path);
+            //
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return ApiTestScreen(
+            //         originalImage: Image.file(File(widget.image.path)),
+            //         testImage: Image.memory(
+            //           bytes,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       );
+            //     }));
+            //   },
+            //   child: Text('DO NOT Press Me!!! I am face cutout'),
+            // ),
+            // TODO: Do not uncomment this button. This is color correction.
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     Uint8List bytes =
+            //         await featuresHelper.correctColor(widget.image.path);
+            //
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return ApiTestScreen(
+            //         originalImage: Image.file(File(widget.image.path)),
+            //         testImage: Image.memory(
+            //           bytes,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       );
+            //     }));
+            //   },
+            //   child: Text('DO NOT Press Me!!! I am color correction.'),
+            // ),
+          ],
         ),
       ),
     );
