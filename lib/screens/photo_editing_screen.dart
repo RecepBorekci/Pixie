@@ -98,6 +98,23 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             //   },
             //   child: Text('DO NOT Press Me!!! I am face cutout'),
             // ),
+            // TODO: Do not uncomment this button. This is color correction.
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     Uint8List bytes =
+            //         await featuresHelper.correctColor(widget.image.path);
+            //
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return ApiTestScreen(
+            //         Image.memory(
+            //           bytes,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       );
+            //     }));
+            //   },
+            //   child: Text('DO NOT Press Me!!! I am color correction.'),
+            // ),
             Container(
               height: 150,
               child: ListView.builder(
