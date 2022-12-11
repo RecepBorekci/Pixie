@@ -14,9 +14,11 @@ class _ApiTestScreenState extends State<ApiTestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [widget.originalImage, widget.testImage],
+      body: SafeArea(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.35,
+          child: widget.testImage,
+        ),
       ),
     );
   }

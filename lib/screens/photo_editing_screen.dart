@@ -7,6 +7,7 @@ import 'package:photo_editor/screens/welcome_screen.dart';
 import 'package:photo_editor/services/cut_out_pro_features.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:photo_editor/widgets/listviewElements.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_editor/widgets/edit_image_viewmodel.dart';
@@ -73,11 +74,39 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  Container(
-                    color: Colors.yellow,
-                    width: 50,
-                    height: 50,
-                  )
+                  ListviewElements(
+                    icon: Icons.remove,
+                    text: 'Background Remove',
+                    onPressed: () async {
+                      Uint8List bytes = await featuresHelper
+                          .removeBackground(widget.image.path);
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ApiTestScreen(
+                          originalImage: Image.file(File(widget.image.path)),
+                          testImage: Image.memory(
+                            bytes,
+                          ),
+                        );
+                      }));
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.filter,
+                    text: 'Filter',
+                    onPressed: () {},
+                  ),
+                  ListviewElements(
+                    icon: Icons.text_fields_outlined,
+                    text: 'Text',
+                    onPressed: () {},
+                  ),
+                  ListviewElements(
+                    icon: Icons.color_lens_outlined,
+                    text: 'Color',
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ),
