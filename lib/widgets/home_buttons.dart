@@ -26,7 +26,7 @@ class HomeButton extends StatelessWidget {
       child: MediaQuery.of(context).orientation == Orientation.portrait
           ? Container(
               height: MediaQuery.of(context).size.width * 0.30,
-              width: MediaQuery.of(context).size.width * 0.32,
+              width: MediaQuery.of(context).size.width * 0.28,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

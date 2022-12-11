@@ -170,26 +170,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  HomeButton(
-                    onPressed: pickImage,
-                    source: ImageSource.gallery,
-                    icon: Icons.photo,
-                    text: "Gallery",
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.pink,
-                  ),
-                  HomeButton(
-                    onPressed: pickImage,
-                    source: ImageSource.camera,
-                    icon: Icons.photo_camera,
-                    text: "Camera",
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.cyan,
-                  ),
-                ],
+              Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    HomeButton(
+                      onPressed: pickImage,
+                      source: ImageSource.gallery,
+                      icon: Icons.photo,
+                      text: "Gallery",
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.pink,
+                    ),
+                    HomeButton(
+                      onPressed: pickImage,
+                      source: ImageSource.camera,
+                      icon: Icons.photo_camera,
+                      text: "Camera",
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.cyan,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
