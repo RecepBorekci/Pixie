@@ -64,23 +64,40 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             const SizedBox(
               height: 50,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                // TODO: DO NOT uncomment lines below until these are added to the buttons.
-                // Uint8List bytes =
-                //     await featuresHelper.removeBackground(widget.image.path);
-                //
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return ApiTestScreen(
-                //     Image.memory(
-                //       bytes,
-                //       fit: BoxFit.cover,
-                //     ),
-                //   );
-                // }));
-              },
-              child: Text('DO NOT Press Me!!!'),
-            ),
+            // TODO: DO NOT uncomment lines below until these are added to the buttons. This is backgroundRemoval.
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     Uint8List bytes =
+            //         await featuresHelper.removeBackground(widget.image.path);
+            //
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return ApiTestScreen(
+            //         Image.memory(
+            //           bytes,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       );
+            //     }));
+            //   },
+            //   child: Text('DO NOT Press Me!!! I am background remover'),
+            // ),
+            // TODO: Do not uncomment this button. This is face cutout.
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     Uint8List bytes =
+            //         await featuresHelper.cutoutFace(widget.image.path);
+            //
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return ApiTestScreen(
+            //         Image.memory(
+            //           bytes,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       );
+            //     }));
+            //   },
+            //   child: Text('DO NOT Press Me!!! I am face cutout'),
+            // ),
             Container(
               height: 150,
               child: ListView.builder(
