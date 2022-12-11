@@ -4,7 +4,6 @@ import 'package:photo_editor/screens/completely_unnecessary_login_screen.dart';
 import 'package:photo_editor/screens/completely_unnecessary_opening_screen.dart';
 import 'package:photo_editor/screens/completely_unnecessary_registration_screen.dart';
 import 'package:photo_editor/screens/photo_editing_screen.dart';
-import 'package:photo_editor/screens/settings_screen.dart';
 
 import './models/palette.dart';
 
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
         '/registration': (context) => CompletelyUnnecessaryRegistrationScreen(),
         '/welcome': (context) => WelcomeScreen(),
         // '/editing': (context) => PhotoEditingScreen(),
-        '/settings': (context) => SettingsScreen(),
       },
     );
   }
