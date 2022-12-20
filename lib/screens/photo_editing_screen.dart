@@ -58,15 +58,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       body: Screenshot(
         controller: screenshotController,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SafeArea(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.35,
-                child: Image.file(File(widget.image.path)),
+            Flexible(
+              child: Image.file(
+                File(widget.image.path),
               ),
-            ),
-            Expanded(
-              child: SizedBox(),
+              fit: FlexFit.tight,
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
