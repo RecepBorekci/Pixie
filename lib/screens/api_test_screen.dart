@@ -17,7 +17,7 @@ class _ApiTestScreenState extends State<ApiTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: ListView(
           children: [widget.originalImage, widget.testImage],
         ),
       ),

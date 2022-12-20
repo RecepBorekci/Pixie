@@ -147,6 +147,23 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               },
               child: Text('DO NOT Press Me!!! I am image retouch.'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                Uint8List bytes =
+                    await featuresHelper.cartoonSelfieMethod(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    originalImage: Image.file(File(widget.image.path)),
+                    testImage: Image.memory(
+                      bytes,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }));
+              },
+              child: Text('DO NOT Press Me!!! I am cartoon selfie.'),
+            ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
               color: Colors.orange,
