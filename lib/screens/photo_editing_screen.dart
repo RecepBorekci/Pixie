@@ -162,7 +162,8 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   );
                 }));
               },
-              child: Text('DO NOT Press Me!!! I am cartoon selfie.'),
+              child:
+                  Text('DO NOT Press Me!!! I am cartoon selfie. (2 Credits)'),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
