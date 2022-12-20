@@ -57,7 +57,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       backgroundColor: Colors.white,
       body: Screenshot(
         controller: screenshotController,
-        child: ListView(
+        child: Column(
           children: [
             SafeArea(
               child: SizedBox(
@@ -67,139 +67,6 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             ),
             Expanded(
               child: SizedBox(),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Uint8List bytes =
-                    await featuresHelper.removeBackground(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: Image.memory(
-                      bytes,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                }));
-              },
-              child: Text('DO NOT Press Me!!! I am background remover'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Uint8List bytes =
-                    await featuresHelper.cutoutFace(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: Image.memory(
-                      bytes,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                }));
-              },
-              child: Text('DO NOT Press Me!!! I am face cutout'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Uint8List bytes =
-                    await featuresHelper.correctColor(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: Image.memory(
-                      bytes,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                }));
-              },
-              child: Text('DO NOT Press Me!!! I am color correction.'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Image passportImage =
-                    await featuresHelper.passportPhotoMethod(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: passportImage,
-                  );
-                }));
-              },
-              child: Text('DO NOT Press Me!!! I am passport photo maker.'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Image passportImage =
-                    await featuresHelper.retouchImage(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: passportImage,
-                  );
-                }));
-              },
-              child: Text('DO NOT Press Me!!! I am image retouch.'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Uint8List bytes =
-                    await featuresHelper.cartoonSelfieMethod(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: Image.memory(
-                      bytes,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                }));
-              },
-              child:
-                  Text('DO NOT Press Me!!! I am cartoon selfie. (2 Credits)'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Uint8List bytes =
-                    await featuresHelper.photoEnhancerMethod(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: Image.memory(
-                      bytes,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                }));
-              },
-              child:
-                  Text('DO NOT Press Me!!! I am photo enhancer. (2 Credits)'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Uint8List bytes = await featuresHelper
-                    .photoColorizerMethod(widget.image.path);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ApiTestScreen(
-                    originalImage: Image.file(File(widget.image.path)),
-                    testImage: Image.memory(
-                      bytes,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                }));
-              },
-              child:
-                  Text('DO NOT Press Me!!! I am photo colorizer. (2 Credits)'),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
@@ -250,7 +117,10 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   }
 }
 
+// TODO: NEVER EVER DELETE THE CODES BELOW!!! THEY ARE BUTTONS FOR USING CUTOUT PRO API.
+
 // TODO: DO NOT uncomment lines below until these are added to the buttons. This is for backgroundRemoval.
+
 // ElevatedButton(
 //   onPressed: () async {
 //     Uint8List bytes =
@@ -268,6 +138,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 //   },
 //   child: Text('DO NOT Press Me!!! I am background remover'),
 // ),
+
 // TODO: Do not uncomment this button. This is for face cutout.
 // ElevatedButton(
 //   onPressed: () async {
@@ -286,6 +157,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 //   },
 //   child: Text('DO NOT Press Me!!! I am face cutout'),
 // ),
+
 // TODO: Do not uncomment this button. This is for color correction.
 // ElevatedButton(
 //   onPressed: () async {
@@ -304,20 +176,97 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 //   },
 //   child: Text('DO NOT Press Me!!! I am color correction.'),
 // ),
-// TODO: Do not uncomment this button. This is for password photo.
+
+// TODO: Do not uncomment this button. This is for passport photo.
 // ElevatedButton(
 //   onPressed: () async {
-//     Image passwordImage =
-//     await featuresHelper.passportPhoto(widget.image.path);
+//     Image passportImage =
+//         await featuresHelper.passportPhotoMethod(widget.image.path);
 //
 //     Navigator.push(context, MaterialPageRoute(builder: (context) {
 //       return ApiTestScreen(
 //         originalImage: Image.file(File(widget.image.path)),
-//         testImage: passwordImage,
+//         testImage: passportImage,
 //       );
 //     }));
 //   },
-//   child: Text('DO NOT Press Me!!! I am password photo maker.'),
+//   child: Text('DO NOT Press Me!!! I am passport photo maker.'),
+// )
+
+// TODO: Do not uncomment this button. This is for image retouch.
+// ElevatedButton(
+//   onPressed: () async {
+//     Image passportImage =
+//         await featuresHelper.retouchImage(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: passportImage,
+//       );
+//     }));
+//   },
+//   child: Text('DO NOT Press Me!!! I am image retouch.'),
+// ),
+
+// TODO: Do not uncomment this button. This is for cartoon selfie. (2 CREDITS)
+// ElevatedButton(
+//   onPressed: () async {
+//     Uint8List bytes =
+//         await featuresHelper.cartoonSelfieMethod(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: Image.memory(
+//           bytes,
+//           fit: BoxFit.cover,
+//         ),
+//       );
+//     }));
+//   },
+//   child:
+//       Text('DO NOT Press Me!!! I am cartoon selfie. (2 Credits)'),
+// ),
+
+// TODO: Do not uncomment this button. This is for photo enhancer. (2 CREDITS)
+// ElevatedButton(
+//   onPressed: () async {
+//     Uint8List bytes =
+//         await featuresHelper.photoEnhancerMethod(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: Image.memory(
+//           bytes,
+//           fit: BoxFit.cover,
+//         ),
+//       );
+//     }));
+//   },
+//   child:
+//       Text('DO NOT Press Me!!! I am photo enhancer. (2 Credits)'),
+// ),
+
+// TODO: Do not uncomment this button. This is for photo colorizer. (2 CREDITS)
+// ElevatedButton(
+//   onPressed: () async {
+//     Uint8List bytes = await featuresHelper
+//         .photoColorizerMethod(widget.image.path);
+//
+//     Navigator.push(context, MaterialPageRoute(builder: (context) {
+//       return ApiTestScreen(
+//         originalImage: Image.file(File(widget.image.path)),
+//         testImage: Image.memory(
+//           bytes,
+//           fit: BoxFit.cover,
+//         ),
+//       );
+//     }));
+//   },
+//   child:
+//       Text('DO NOT Press Me!!! I am photo colorizer. (2 Credits)'),
 // ),
 
 // SizedBox(
