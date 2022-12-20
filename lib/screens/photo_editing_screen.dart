@@ -57,7 +57,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       backgroundColor: Colors.white,
       body: Screenshot(
         controller: screenshotController,
-        child: Column(
+        child: ListView(
           children: [
             SafeArea(
               child: SizedBox(
@@ -182,6 +182,24 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               },
               child:
                   Text('DO NOT Press Me!!! I am photo enhancer. (2 Credits)'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Uint8List bytes = await featuresHelper
+                    .photoColorizerMethod(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    originalImage: Image.file(File(widget.image.path)),
+                    testImage: Image.memory(
+                      bytes,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }));
+              },
+              child:
+                  Text('DO NOT Press Me!!! I am photo colorizer. (2 Credits)'),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
