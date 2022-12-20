@@ -15,6 +15,7 @@ const faceCutout = 'matting?mattingType=3';
 const colorCorrection = 'matting?mattingType=4';
 const passportPhoto = 'idphoto/printLayout';
 const imageRetouch = 'imageFix';
+const photoEnhancer = 'matting?mattingType=18';
 
 const cartoonSelfie = 'cartoonSelfie?cartoonType=$cartoonSelfieType';
 
@@ -188,6 +189,17 @@ class CutOutProFeatures {
     try {
       Uint8List rawImageBytes =
           (await uploadImage(path, cartoonSelfie)).bodyBytes;
+
+      return rawImageBytes;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<dynamic> photoEnhancerMethod(String path) async {
+    try {
+      Uint8List rawImageBytes =
+          (await uploadImage(path, photoEnhancer)).bodyBytes;
 
       return rawImageBytes;
     } catch (e) {
