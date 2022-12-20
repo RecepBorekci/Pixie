@@ -13,6 +13,7 @@ const backgroundRemoval = 'matting?mattingType=6';
 const faceCutout = 'matting?mattingType=3';
 const colorCorrection = 'matting?mattingType=4';
 const passportPhoto = 'idphoto/printLayout';
+const imageRetouch = 'imageFix';
 
 // Class for using CutOutPro API. This class will have the methods for the features in this API.
 class CutOutProFeatures {
@@ -67,6 +68,35 @@ class CutOutProFeatures {
     return response;
   }
 
+  Future<http.Response> uploadImageForImageRetouch(path) async {
+    final bytes = await Io.File(path).readAsBytes();
+
+    String img64 = base64Encode(bytes);
+
+    final body = jsonEncode({
+      'base64': img64,
+      'rectangles': [
+        {
+          "height": 200,
+          "width": 200,
+          "x": 160,
+          "y": 280,
+        },
+        {"height": 200, "width": 200, "x": 560, "y": 680},
+      ]
+    });
+
+    http.Response response =
+        await http.post(Uri.parse('$cutOutProUrl$imageRetouch'),
+            headers: {
+              'APIKEY': apiKey,
+              'Content-Type': 'application/json',
+            },
+            body: body);
+
+    return response;
+  }
+
   Future<dynamic> removeBackground(String path) async {
     try {
       // POST METHOD FOR APIs.
@@ -104,13 +134,42 @@ class CutOutProFeatures {
     }
   }
 
-  Future<Image> passportPhoto(String path) async {
+  Future<dynamic> correctColor(String path) async {
+    try {
+      Uint8List rawImageBytes =
+          (await uploadImage(path, colorCorrection)).bodyBytes;
+
+      return rawImageBytes;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<Image> passportPhotoMethod(String path) async {
     try {
       String data = (await uploadImagePassportPhoto(path)).body;
 
       print(data);
 
       String imageURL = jsonDecode(data)['data']['idPhotoImage'];
+
+      print(imageURL);
+
+      Image image = Image.network(imageURL);
+
+      return image;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<Image> retouchImage(String path) async {
+    try {
+      String data = (await uploadImageForImageRetouch(path)).body;
+
+      print(data);
+
+      String imageURL = jsonDecode(data)['data']['imageUrl'];
 
       print(imageURL);
 

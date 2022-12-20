@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 
-class CompletelyUnnecessaryRegistrationScreen extends StatefulWidget {
-  const CompletelyUnnecessaryRegistrationScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({Key? key}) : super(key: key);
 
   @override
-  State<CompletelyUnnecessaryRegistrationScreen> createState() =>
-      _CompletelyUnnecessaryRegistrationScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _CompletelyUnnecessaryRegistrationScreenState
-    extends State<CompletelyUnnecessaryRegistrationScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();

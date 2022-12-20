@@ -68,30 +68,109 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             Expanded(
               child: SizedBox(),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                Uint8List bytes =
+                    await featuresHelper.removeBackground(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    originalImage: Image.file(File(widget.image.path)),
+                    testImage: Image.memory(
+                      bytes,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }));
+              },
+              child: Text('DO NOT Press Me!!! I am background remover'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Uint8List bytes =
+                    await featuresHelper.cutoutFace(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    originalImage: Image.file(File(widget.image.path)),
+                    testImage: Image.memory(
+                      bytes,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }));
+              },
+              child: Text('DO NOT Press Me!!! I am face cutout'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Uint8List bytes =
+                    await featuresHelper.correctColor(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    originalImage: Image.file(File(widget.image.path)),
+                    testImage: Image.memory(
+                      bytes,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }));
+              },
+              child: Text('DO NOT Press Me!!! I am color correction.'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Image passportImage =
+                    await featuresHelper.passportPhotoMethod(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    originalImage: Image.file(File(widget.image.path)),
+                    testImage: passportImage,
+                  );
+                }));
+              },
+              child: Text('DO NOT Press Me!!! I am passport photo maker.'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Image passportImage =
+                    await featuresHelper.retouchImage(widget.image.path);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ApiTestScreen(
+                    originalImage: Image.file(File(widget.image.path)),
+                    testImage: passportImage,
+                  );
+                }));
+              },
+              child: Text('DO NOT Press Me!!! I am image retouch.'),
+            ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
               color: Colors.orange,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  ListviewElements(
-                    icon: Icons.remove,
-                    text: 'Background Remove',
-                    onPressed: () async {
-                      Uint8List bytes = await featuresHelper
-                          .removeBackground(widget.image.path);
-
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ApiTestScreen(
-                          originalImage: Image.file(File(widget.image.path)),
-                          testImage: Image.memory(
-                            bytes,
-                          ),
-                        );
-                      }));
-                    },
-                  ),
+                  // ListviewElements(
+                  //   icon: Icons.remove,
+                  //   text: 'Background Remove',
+                  //   onPressed: () async {
+                  //     Uint8List bytes = await featuresHelper
+                  //         .removeBackground(widget.image.path);
+                  //
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) {
+                  //       return ApiTestScreen(
+                  //         originalImage: Image.file(File(widget.image.path)),
+                  //         testImage: Image.memory(
+                  //           bytes,
+                  //         ),
+                  //       );
+                  //     }));
+                  //   },
+                  // ),
                   ListviewElements(
                     icon: Icons.filter,
                     text: 'Filter',

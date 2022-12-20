@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 
-class CompletelyUnnecessaryLoginScreen extends StatefulWidget {
-  const CompletelyUnnecessaryLoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<CompletelyUnnecessaryLoginScreen> createState() =>
-      _CompletelyUnnecessaryLoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _CompletelyUnnecessaryLoginScreenState
-    extends State<CompletelyUnnecessaryLoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final emailOrUsernameController = TextEditingController();
   final passwordController = TextEditingController();
 

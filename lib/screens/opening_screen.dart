@@ -4,8 +4,8 @@ import 'package:photo_editor/screens/welcome_screen.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
 
-class CompletelyUnnecessaryOpeningScreen extends StatelessWidget {
-  const CompletelyUnnecessaryOpeningScreen({Key? key}) : super(key: key);
+class OpeningScreen extends StatelessWidget {
+  const OpeningScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CompletelyUnnecessaryOpeningScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CompletelyUnnecessaryLoginScreen();
+                  return LoginScreen();
                 }));
               },
               child: Text('Log In'),
@@ -27,7 +27,7 @@ class CompletelyUnnecessaryOpeningScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CompletelyUnnecessaryRegistrationScreen();
+                  return RegistrationScreen();
                 }));
               },
               child: Text('Register'),
