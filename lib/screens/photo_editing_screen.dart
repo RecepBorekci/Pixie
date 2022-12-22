@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+// import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_editor/screens/api_test_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
@@ -35,6 +36,12 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   // }
 
   String imageData = '';
+
+  // Future cropImage(File imageFile) async {
+  //   await ImageCropper.platform.cropImage(
+  //     sourcePath: imageFile.path,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +102,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   //     }));
                   //   },
                   // ),
+                  ListviewElements(
+                    icon: Icons.crop,
+                    text: 'Crop',
+                    onPressed: () {
+                      // await cropImage(File(widget.image.path));
+                    },
+                  ),
                   ListviewElements(
                     icon: Icons.filter,
                     text: 'Filter',

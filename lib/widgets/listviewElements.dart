@@ -13,25 +13,30 @@ class ListviewElements extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: GestureDetector(
-        child: Container(
-          color: Colors.cyan,
-          width: 50,
-          height: 50,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
+    return Card(
+      child: InkWell(
+        splashColor: Colors.red,
+        child: Material(
+          child: GestureDetector(
+            child: Container(
+              color: Colors.cyan,
+              width: 50,
+              height: 50,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                  ),
+                  Text(
+                    text,
+                  ),
+                ],
               ),
-              Text(
-                text,
-              ),
-            ],
+            ),
+            onTap: onPressed,
           ),
         ),
-        onTap: onPressed,
       ),
     );
   }
