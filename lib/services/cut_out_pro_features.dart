@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 const apiKey = '2327f560a4be4ce7a439dd770bab6128';
-const cartoonSelfieType = 7;
 
 const cutOutProUrl = 'https://www.cutout.pro/api/v1/';
 const backgroundRemoval = 'matting?mattingType=6';
@@ -18,7 +17,7 @@ const imageRetouch = 'imageFix';
 const photoEnhancer = 'matting?mattingType=18';
 const photoColorizer = 'matting?mattingType=19';
 
-const cartoonSelfie = 'cartoonSelfie?cartoonType=$cartoonSelfieType';
+const cartoonSelfie = 'cartoonSelfie?cartoonType=';
 
 // Class for using CutOutPro API. This class will have the methods for the features in this API.
 class CutOutProFeatures {
@@ -186,10 +185,13 @@ class CutOutProFeatures {
     }
   }
 
-  Future<dynamic> cartoonSelfieMethod(String path) async {
+  Future<dynamic> cartoonSelfieMethod(
+      String path, int cartoonSelfieType) async {
     try {
+      String cartoonSelfieUri = "$cartoonSelfie${cartoonSelfieType.toString()}";
+
       Uint8List rawImageBytes =
-          (await uploadImage(path, cartoonSelfie)).bodyBytes;
+          (await uploadImage(path, cartoonSelfieUri)).bodyBytes;
 
       return rawImageBytes;
     } catch (e) {
