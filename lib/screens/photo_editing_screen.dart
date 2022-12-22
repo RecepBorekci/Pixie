@@ -22,7 +22,9 @@ class PhotoEditingScreen extends StatefulWidget {
 }
 
 class _PhotoEditingScreenState extends EditImageViewModel {
-  void onPressedFilter() {}
+  void onPressedFilter() {
+    print("object");
+  }
 
   CutOutProFeatures featuresHelper = CutOutProFeatures();
 

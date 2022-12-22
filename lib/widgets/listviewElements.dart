@@ -14,24 +14,24 @@ class ListviewElements extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        onPressed;
-      },
-      child: Container(
-        color: Colors.cyan,
-        width: 50,
-        height: 50,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-            ),
-            Text(
-              text,
-            ),
-          ],
+      child: GestureDetector(
+        child: Container(
+          color: Colors.cyan,
+          width: 50,
+          height: 50,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+              ),
+              Text(
+                text,
+              ),
+            ],
+          ),
         ),
+        onTap: onPressed,
       ),
     );
   }
