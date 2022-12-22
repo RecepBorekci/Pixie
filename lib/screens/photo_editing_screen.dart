@@ -70,6 +70,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               height: MediaQuery.of(context).size.height * 0.08,
               color: Colors.orange,
               child: ListView(
+                shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 children: [
                   // ListviewElements(
@@ -104,6 +105,244 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.color_lens_outlined,
                     text: 'Color',
                     onPressed: () {},
+                  ),
+                  ListviewElements(
+                    icon: Icons.star_border_purple500_outlined,
+                    text: 'Special',
+                    onPressed: () {
+                      showModalBottomSheet(
+                          barrierColor: Colors.white.withOpacity(0),
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(35))),
+                          context: context,
+                          builder: (context) => SizedBox(
+                                height: 70,
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    ListviewElements(
+                                      icon: Icons.remove,
+                                      text: 'Remove BG',
+                                      onPressed: () async {
+                                        Uint8List bytes = await featuresHelper
+                                            .removeBackground(
+                                                widget.image.path);
+
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return ApiTestScreen(
+                                            originalImage: Image.file(
+                                                File(widget.image.path)),
+                                            testImage: Image.memory(
+                                              bytes,
+                                            ),
+                                          );
+                                        }));
+                                      },
+                                    ),
+                                    ListviewElements(
+                                      icon: Icons.face_outlined,
+                                      text: 'Face Cutout',
+                                      onPressed: () {
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Uint8List bytes =
+                                                await featuresHelper.cutoutFace(
+                                                    widget.image.path);
+
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ApiTestScreen(
+                                                originalImage: Image.file(
+                                                    File(widget.image.path)),
+                                                testImage: Image.memory(
+                                                  bytes,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            }));
+                                          },
+                                          child: Text(
+                                              'DO NOT Press Me!!! I am face cutout'),
+                                        );
+                                      },
+                                    ),
+                                    ListviewElements(
+                                      icon: Icons.color_lens_outlined,
+                                      text: 'Correct Color',
+                                      onPressed: () {
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Uint8List bytes =
+                                                await featuresHelper
+                                                    .correctColor(
+                                                        widget.image.path);
+
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ApiTestScreen(
+                                                originalImage: Image.file(
+                                                    File(widget.image.path)),
+                                                testImage: Image.memory(
+                                                  bytes,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            }));
+                                          },
+                                          child: Text(
+                                              'DO NOT Press Me!!! I am color correction.'),
+                                        );
+                                      },
+                                    ),
+                                    ListviewElements(
+                                      icon: Icons.photo_camera_front_outlined,
+                                      text: 'Make Passport',
+                                      onPressed: () {
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Image passportImage =
+                                                await featuresHelper
+                                                    .passportPhotoMethod(
+                                                        widget.image.path);
+
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ApiTestScreen(
+                                                originalImage: Image.file(
+                                                    File(widget.image.path)),
+                                                testImage: passportImage,
+                                              );
+                                            }));
+                                          },
+                                          child: Text(
+                                              'DO NOT Press Me!!! I am passport photo maker.'),
+                                        );
+                                      },
+                                    ),
+                                    ListviewElements(
+                                      icon: Icons.image_outlined,
+                                      text: 'Image Retouch',
+                                      onPressed: () {
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Image passportImage =
+                                                await featuresHelper
+                                                    .retouchImage(
+                                                        widget.image.path);
+
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ApiTestScreen(
+                                                originalImage: Image.file(
+                                                    File(widget.image.path)),
+                                                testImage: passportImage,
+                                              );
+                                            }));
+                                          },
+                                          child: Text(
+                                              'DO NOT Press Me!!! I am image retouch.'),
+                                        );
+                                      },
+                                    ),
+                                    ListviewElements(
+                                      icon: Icons.perm_identity_outlined,
+                                      text: 'Cartoon Selfie',
+                                      onPressed: () {
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Uint8List bytes =
+                                                await featuresHelper
+                                                    .cartoonSelfieMethod(
+                                                        widget.image.path);
+
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ApiTestScreen(
+                                                originalImage: Image.file(
+                                                    File(widget.image.path)),
+                                                testImage: Image.memory(
+                                                  bytes,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            }));
+                                          },
+                                          child: Text(
+                                              'DO NOT Press Me!!! I am cartoon selfie. (2 Credits)'),
+                                        );
+                                      },
+                                    ),
+                                    ListviewElements(
+                                      icon: Icons.perm_identity_outlined,
+                                      text: 'Enhance Photo',
+                                      onPressed: () {
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Uint8List bytes =
+                                                await featuresHelper
+                                                    .photoEnhancerMethod(
+                                                        widget.image.path);
+
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ApiTestScreen(
+                                                originalImage: Image.file(
+                                                    File(widget.image.path)),
+                                                testImage: Image.memory(
+                                                  bytes,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            }));
+                                          },
+                                          child: Text(
+                                              'DO NOT Press Me!!! I am photo enhancer. (2 Credits)'),
+                                        );
+                                      },
+                                    ),
+                                    ListviewElements(
+                                      icon: Icons.perm_identity_outlined,
+                                      text: 'Enhance Photo',
+                                      onPressed: () {
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Uint8List bytes =
+                                                await featuresHelper
+                                                    .photoColorizerMethod(
+                                                        widget.image.path);
+
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ApiTestScreen(
+                                                originalImage: Image.file(
+                                                    File(widget.image.path)),
+                                                testImage: Image.memory(
+                                                  bytes,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            }));
+                                          },
+                                          child: Text(
+                                              'DO NOT Press Me!!! I am photo colorizer. (2 Credits)'),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ));
+                    },
                   ),
                 ],
               ),
