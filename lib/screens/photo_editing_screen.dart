@@ -11,6 +11,7 @@ import 'package:photo_editor/widgets/listviewElements.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_editor/widgets/edit_image_viewmodel.dart';
+import 'package:photofilters/photofilters.dart';
 
 class PhotoEditingScreen extends StatefulWidget {
   final XFile image;
@@ -21,6 +22,8 @@ class PhotoEditingScreen extends StatefulWidget {
 }
 
 class _PhotoEditingScreenState extends EditImageViewModel {
+  void onPressedFilter() {}
+
   CutOutProFeatures featuresHelper = CutOutProFeatures();
 
   // @override
@@ -93,7 +96,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.filter,
                     text: 'Filter',
-                    onPressed: () {},
+                    onPressed: onPressedFilter,
                   ),
                   ListviewElements(
                     icon: Icons.text_fields_outlined,

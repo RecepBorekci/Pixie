@@ -13,9 +13,10 @@ class ListviewElements extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      onTap: () {},
       child: Container(
-        color: Colors.yellow,
+        color: Colors.cyan,
         width: 50,
         height: 50,
         child: Column(
@@ -30,7 +31,6 @@ class ListviewElements extends StatelessWidget {
           ],
         ),
       ),
-      onTap: onPressed,
     );
   }
 }
