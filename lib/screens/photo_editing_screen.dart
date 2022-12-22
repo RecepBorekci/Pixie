@@ -13,18 +13,53 @@ import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_editor/widgets/edit_image_viewmodel.dart';
 import 'package:photofilters/photofilters.dart';
+import "../widgets/filter_elements.dart";
+import 'dart:async';
+import 'package:path/path.dart';
+import 'package:image/image.dart' as imageLib;
 
 class PhotoEditingScreen extends StatefulWidget {
-  final XFile image;
-  const PhotoEditingScreen({Key? key, required this.image}) : super(key: key);
+  XFile ximage;
+  File imageFile;
+  PhotoEditingScreen({Key? key, required this.ximage, required this.imageFile})
+      : super(key: key);
 
   @override
   State<PhotoEditingScreen> createState() => _PhotoEditingScreenState();
 }
 
+bool isFilterSelected = false;
+
 class _PhotoEditingScreenState extends EditImageViewModel {
-  void onPressedFilter() {
-    print("object");
+  late String fileName;
+  List<Filter> filters = presetFiltersList;
+  Future getImage(context) async {
+    fileName = basename(widget.imageFile.path);
+    var image = imageLib.decodeImage(widget.imageFile.readAsBytesSync());
+    image = imageLib.copyResize(image!, width: 600);
+    Map imagefile = await Navigator.push(
+      context,
+      new MaterialPageRoute(
+        builder: (context) => new PhotoFilterSelector(
+          title: Text("Select Filter"),
+          image: image!,
+          filters: presetFiltersList,
+          filename: fileName,
+          loader: Center(child: CircularProgressIndicator()),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+    XFile newImage = new XFile(imagefile['image_filtered'].toString());
+    if (imagefile != null) {
+      setState(() {
+        widget.imageFile = imagefile['image_filtered'];
+      });
+      print(widget.imageFile.path);
+    }
+    setState(() {
+      widget.ximage = XFile(widget.imageFile.path);
+    });
   }
 
   CutOutProFeatures featuresHelper = CutOutProFeatures();
@@ -74,7 +109,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
           children: [
             Flexible(
               child: Image.file(
-                File(widget.image.path),
+                File(widget.ximage.path),
               ),
               fit: FlexFit.tight,
             ),
@@ -113,7 +148,9 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.filter,
                     text: 'Filter',
-                    onPressed: onPressedFilter,
+                    onPressed: () {
+                      getImage(context);
+                    },
                   ),
                   ListviewElements(
                     icon: Icons.text_fields_outlined,
@@ -147,14 +184,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                       onPressed: () async {
                                         Uint8List bytes = await featuresHelper
                                             .removeBackground(
-                                                widget.image.path);
+                                                widget.ximage.path);
 
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
                                           return ApiTestScreen(
                                             originalImage: Image.file(
-                                                File(widget.image.path)),
+                                                File(widget.ximage.path)),
                                             testImage: Image.memory(
                                               bytes,
                                             ),
@@ -170,14 +207,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                           onPressed: () async {
                                             Uint8List bytes =
                                                 await featuresHelper.cutoutFace(
-                                                    widget.image.path);
+                                                    widget.ximage.path);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return ApiTestScreen(
                                                 originalImage: Image.file(
-                                                    File(widget.image.path)),
+                                                    File(widget.ximage.path)),
                                                 testImage: Image.memory(
                                                   bytes,
                                                   fit: BoxFit.cover,
@@ -199,14 +236,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                             Uint8List bytes =
                                                 await featuresHelper
                                                     .correctColor(
-                                                        widget.image.path);
+                                                        widget.ximage.path);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return ApiTestScreen(
                                                 originalImage: Image.file(
-                                                    File(widget.image.path)),
+                                                    File(widget.ximage.path)),
                                                 testImage: Image.memory(
                                                   bytes,
                                                   fit: BoxFit.cover,
@@ -228,14 +265,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                             Image passportImage =
                                                 await featuresHelper
                                                     .passportPhotoMethod(
-                                                        widget.image.path);
+                                                        widget.ximage.path);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return ApiTestScreen(
                                                 originalImage: Image.file(
-                                                    File(widget.image.path)),
+                                                    File(widget.ximage.path)),
                                                 testImage: passportImage,
                                               );
                                             }));
@@ -254,14 +291,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                             Image passportImage =
                                                 await featuresHelper
                                                     .retouchImage(
-                                                        widget.image.path);
+                                                        widget.ximage.path);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return ApiTestScreen(
                                                 originalImage: Image.file(
-                                                    File(widget.image.path)),
+                                                    File(widget.ximage.path)),
                                                 testImage: passportImage,
                                               );
                                             }));
@@ -280,14 +317,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                             Uint8List bytes =
                                                 await featuresHelper
                                                     .cartoonSelfieMethod(
-                                                        widget.image.path);
+                                                        widget.ximage.path);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return ApiTestScreen(
                                                 originalImage: Image.file(
-                                                    File(widget.image.path)),
+                                                    File(widget.ximage.path)),
                                                 testImage: Image.memory(
                                                   bytes,
                                                   fit: BoxFit.cover,
@@ -309,14 +346,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                             Uint8List bytes =
                                                 await featuresHelper
                                                     .photoEnhancerMethod(
-                                                        widget.image.path);
+                                                        widget.ximage.path);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return ApiTestScreen(
                                                 originalImage: Image.file(
-                                                    File(widget.image.path)),
+                                                    File(widget.ximage.path)),
                                                 testImage: Image.memory(
                                                   bytes,
                                                   fit: BoxFit.cover,
@@ -338,14 +375,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                             Uint8List bytes =
                                                 await featuresHelper
                                                     .photoColorizerMethod(
-                                                        widget.image.path);
+                                                        widget.ximage.path);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return ApiTestScreen(
                                                 originalImage: Image.file(
-                                                    File(widget.image.path)),
+                                                    File(widget.ximage.path)),
                                                 testImage: Image.memory(
                                                   bytes,
                                                   fit: BoxFit.cover,

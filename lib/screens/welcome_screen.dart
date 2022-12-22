@@ -50,7 +50,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       setState(() => this.image = imageTemporary);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PhotoEditingScreen(
-          image: image,
+          ximage: image,
+          imageFile: File(image.path),
         );
       }));
     } on PlatformException catch (e) {
