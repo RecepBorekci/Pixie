@@ -32,6 +32,8 @@ bool isFilterSelected = false;
 
 class _PhotoEditingScreenState extends EditImageViewModel {
   late String fileName;
+  late int cartoonSelfieType;
+
   List<Filter> filters = presetFiltersList;
   Future getImage(context) async {
     fileName = basename(widget.imageFile.path);
@@ -317,7 +319,8 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                                             Uint8List bytes =
                                                 await featuresHelper
                                                     .cartoonSelfieMethod(
-                                                        widget.ximage.path);
+                                                        widget.ximage.path,
+                                                        cartoonSelfieType);
 
                                             Navigator.push(context,
                                                 MaterialPageRoute(
