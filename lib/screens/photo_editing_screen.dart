@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 // import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_editor/models/palette.dart';
 import 'package:photo_editor/screens/api_test_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 import 'package:photo_editor/services/cut_out_pro_features.dart';
@@ -106,6 +107,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               final snackBar = SnackBar(
                 content: Text('Image Saved'),
                 duration: Duration(seconds: 2),
+                backgroundColor: Colors.black38,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
