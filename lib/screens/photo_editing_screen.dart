@@ -15,9 +15,11 @@ import 'package:photo_editor/widgets/edit_image_viewmodel.dart';
 import 'package:photofilters/photofilters.dart';
 import '../widgets/cartoon_selfie_elements.dart';
 import "../widgets/filter_elements.dart";
+import 'package:gallery_saver/gallery_saver.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:image/image.dart' as imageLib;
+import 'package:path_provider/path_provider.dart';
 
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
@@ -99,85 +101,84 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               Icons.save,
               color: Colors.white,
             ),
-            onPressed: () => saveToGallery(context),
+            onPressed: () {
+              GallerySaver.saveImage(widget.ximage.path);
+            },
             tooltip: 'Save Image',
           )
         ],
       ),
       backgroundColor: Colors.white,
-      body: Screenshot(
-        controller: screenshotController,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Image.file(
-                File(widget.ximage.path),
-              ),
-              fit: FlexFit.tight,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Image.file(
+              File(widget.ximage.path),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.08,
-              color: Colors.orange,
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: [
-                  // ListviewElements(
-                  //   icon: Icons.remove,
-                  //   text: 'Background Remove',
-                  //   onPressed: () async {
-                  //     Uint8List bytes = await featuresHelper
-                  //         .removeBackground(widget.image.path);
-                  //
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) {
-                  //       return ApiTestScreen(
-                  //         originalImage: Image.file(File(widget.image.path)),
-                  //         testImage: Image.memory(
-                  //           bytes,
-                  //         ),
-                  //       );
-                  //     }));
-                  //   },
-                  // ),
-                  ListviewElements(
-                    icon: Icons.crop,
-                    text: 'Crop',
-                    onPressed: () {
-                      // await cropImage(File(widget.image.path));
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.filter,
-                    text: 'Filter',
-                    onPressed: () {
-                      getImage(context);
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.text_fields_outlined,
-                    text: 'Text',
-                    onPressed: () {},
-                  ),
-                  ListviewElements(
-                    icon: Icons.color_lens_outlined,
-                    text: 'Color',
-                    onPressed: () {},
-                  ),
-                  ListviewElements(
-                    icon: Icons.star_border_purple500_outlined,
-                    text: 'Special',
-                    onPressed: () {
-                      createSpecialsElements(
-                          context, featuresHelper, widget.ximage.path);
-                    },
-                  ),
-                ],
-              ),
+            fit: FlexFit.tight,
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.08,
+            color: Colors.orange,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                // ListviewElements(
+                //   icon: Icons.remove,
+                //   text: 'Background Remove',
+                //   onPressed: () async {
+                //     Uint8List bytes = await featuresHelper
+                //         .removeBackground(widget.image.path);
+                //
+                //     Navigator.push(context,
+                //         MaterialPageRoute(builder: (context) {
+                //       return ApiTestScreen(
+                //         originalImage: Image.file(File(widget.image.path)),
+                //         testImage: Image.memory(
+                //           bytes,
+                //         ),
+                //       );
+                //     }));
+                //   },
+                // ),
+                ListviewElements(
+                  icon: Icons.crop,
+                  text: 'Crop',
+                  onPressed: () {
+                    // await cropImage(File(widget.image.path));
+                  },
+                ),
+                ListviewElements(
+                  icon: Icons.filter,
+                  text: 'Filter',
+                  onPressed: () {
+                    getImage(context);
+                  },
+                ),
+                ListviewElements(
+                  icon: Icons.text_fields_outlined,
+                  text: 'Text',
+                  onPressed: () {},
+                ),
+                ListviewElements(
+                  icon: Icons.color_lens_outlined,
+                  text: 'Color',
+                  onPressed: () {},
+                ),
+                ListviewElements(
+                  icon: Icons.star_border_purple500_outlined,
+                  text: 'Special',
+                  onPressed: () {
+                    createSpecialsElements(
+                        context, featuresHelper, widget.ximage.path);
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
