@@ -103,6 +103,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             ),
             onPressed: () {
               GallerySaver.saveImage(widget.ximage.path);
+              final snackBar = SnackBar(
+                content: Text('Image Saved'),
+                duration: Duration(seconds: 2),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
             tooltip: 'Save Image',
           )
