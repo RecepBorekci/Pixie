@@ -65,9 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 try {
-                  final user = _auth.signInWithEmailAndPassword(
+                  final user = await _auth.signInWithEmailAndPassword(
                     email: emailOrUsernameController.text.trim(),
                     password: passwordController.text.trim(),
                   );

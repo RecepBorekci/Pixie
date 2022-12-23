@@ -182,6 +182,29 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     );
   }
 
+  void pushTestScreenWithImageBytes(
+      BuildContext context, String path, Uint8List bytes) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ApiTestScreen(
+        originalImage: Image.file(File(path)),
+        testImage: Image.memory(
+          bytes,
+          fit: BoxFit.cover,
+        ),
+      );
+    }));
+  }
+
+  void pushTestScreenWithImage(
+      BuildContext context, String path, Image passportImage) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ApiTestScreen(
+        originalImage: Image.file(File(path)),
+        testImage: passportImage,
+      );
+    }));
+  }
+
   createSpecialsElements(
       BuildContext context, CutOutProFeatures helper, String path) async {
     showModalBottomSheet(
@@ -201,104 +224,44 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     onPressed: () async {
                       Uint8List bytes = await helper.removeBackground(path);
 
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ApiTestScreen(
-                          originalImage: Image.file(File(path)),
-                          testImage: Image.memory(
-                            bytes,
-                          ),
-                        );
-                      }));
+                      pushTestScreenWithImageBytes(context, path, bytes);
                     },
                   ),
                   ListviewElements(
                     icon: Icons.face_outlined,
                     text: 'Face Cutout',
-                    onPressed: () {
-                      ElevatedButton(
-                        onPressed: () async {
-                          Uint8List bytes = await helper.cutoutFace(path);
+                    onPressed: () async {
+                      Uint8List bytes = await helper.cutoutFace(path);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ApiTestScreen(
-                              originalImage: Image.file(File(path)),
-                              testImage: Image.memory(
-                                bytes,
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          }));
-                        },
-                        child: Text('DO NOT Press Me!!! I am face cutout'),
-                      );
+                      pushTestScreenWithImageBytes(context, path, bytes);
                     },
                   ),
                   ListviewElements(
                     icon: Icons.color_lens_outlined,
                     text: 'Correct Color',
-                    onPressed: () {
-                      ElevatedButton(
-                        onPressed: () async {
-                          Uint8List bytes = await helper.correctColor(path);
+                    onPressed: () async {
+                      Uint8List bytes = await helper.correctColor(path);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ApiTestScreen(
-                              originalImage: Image.file(File(path)),
-                              testImage: Image.memory(
-                                bytes,
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          }));
-                        },
-                        child:
-                            Text('DO NOT Press Me!!! I am color correction.'),
-                      );
+                      pushTestScreenWithImageBytes(context, path, bytes);
                     },
                   ),
                   ListviewElements(
                     icon: Icons.photo_camera_front_outlined,
                     text: 'Make Passport',
-                    onPressed: () {
-                      ElevatedButton(
-                        onPressed: () async {
-                          Image passportImage =
-                              await helper.passportPhotoMethod(path);
+                    onPressed: () async {
+                      Image passportImage =
+                          await helper.passportPhotoMethod(path);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ApiTestScreen(
-                              originalImage: Image.file(File(path)),
-                              testImage: passportImage,
-                            );
-                          }));
-                        },
-                        child: Text(
-                            'DO NOT Press Me!!! I am passport photo maker.'),
-                      );
+                      pushTestScreenWithImage(context, path, passportImage);
                     },
                   ),
                   ListviewElements(
                     icon: Icons.image_outlined,
                     text: 'Image Retouch',
-                    onPressed: () {
-                      ElevatedButton(
-                        onPressed: () async {
-                          Image passportImage = await helper.retouchImage(path);
+                    onPressed: () async {
+                      Image imageRetouch = await helper.retouchImage(path);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ApiTestScreen(
-                              originalImage: Image.file(File(path)),
-                              testImage: passportImage,
-                            );
-                          }));
-                        },
-                        child: Text('DO NOT Press Me!!! I am image retouch.'),
-                      );
+                      pushTestScreenWithImage(context, path, imageRetouch);
                     },
                   ),
                   ListviewElements(
@@ -306,75 +269,24 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     text: 'Cartoon Selfie',
                     onPressed: () async {
                       await createCartoonSelfieElements(context, helper, path);
-                      // ElevatedButton(
-                      //   onPressed: () async {
-                      //     Uint8List bytes = await helper.cartoonSelfieMethod(
-                      //         path, cartoonSelfieType);
-                      //
-                      //     Navigator.push(context,
-                      //         MaterialPageRoute(builder: (context) {
-                      //       return ApiTestScreen(
-                      //         originalImage: Image.file(File(path)),
-                      //         testImage: Image.memory(
-                      //           bytes,
-                      //           fit: BoxFit.cover,
-                      //         ),
-                      //       );
-                      //     }));
-                      //   },
-                      //   child: Text(
-                      //       'DO NOT Press Me!!! I am cartoon selfie. (2 Credits)'),
-                      // );
                     },
                   ),
                   ListviewElements(
                     icon: Icons.perm_identity_outlined,
                     text: 'Enhance Photo',
-                    onPressed: () {
-                      ElevatedButton(
-                        onPressed: () async {
-                          Uint8List bytes =
-                              await helper.photoEnhancerMethod(path);
+                    onPressed: () async {
+                      Uint8List bytes = await helper.photoEnhancerMethod(path);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ApiTestScreen(
-                              originalImage: Image.file(File(path)),
-                              testImage: Image.memory(
-                                bytes,
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          }));
-                        },
-                        child: Text(
-                            'DO NOT Press Me!!! I am photo enhancer. (2 Credits)'),
-                      );
+                      pushTestScreenWithImageBytes(context, path, bytes);
                     },
                   ),
                   ListviewElements(
                     icon: Icons.perm_identity_outlined,
                     text: 'Colorize Photo',
-                    onPressed: () {
-                      ElevatedButton(
-                        onPressed: () async {
-                          Uint8List bytes =
-                              await helper.photoColorizerMethod(path);
+                    onPressed: () async {
+                      Uint8List bytes = await helper.photoColorizerMethod(path);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ApiTestScreen(
-                              originalImage: Image.file(File(path)),
-                              testImage: Image.memory(
-                                bytes,
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          }));
-                        },
-                        child: Text(
-                            'DO NOT Press Me!!! I am photo colorizer. (2 Credits)'),
-                      );
+                      pushTestScreenWithImageBytes(context, path, bytes);
                     },
                   ),
                 ],
@@ -400,15 +312,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 0);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '1',
@@ -416,15 +320,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 1);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '2',
@@ -432,15 +328,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 2);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '3',
@@ -448,15 +336,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 3);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '4',
@@ -464,15 +344,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 4);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '5',
@@ -480,15 +352,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 5);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '6',
@@ -496,15 +360,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 6);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '7',
@@ -512,15 +368,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 7);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '8',
@@ -528,15 +376,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 8);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '9',
@@ -544,15 +384,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 9);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
             CartoonSelfieElements(
                 buttonName: '10',
@@ -560,15 +392,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 10);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ApiTestScreen(
-                      originalImage: Image.file(File(path)),
-                      testImage: Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }));
+                  pushTestScreenWithImageBytes(context, path, bytes);
                 }),
           ],
         ),

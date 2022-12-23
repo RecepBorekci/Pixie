@@ -139,7 +139,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             Center(
                 child: Text(
-              "Version: 0.5.0-alpha",
+              "Version: 0.2.0-beta",
               style: TextStyle(color: Colors.grey),
             )),
           ],
