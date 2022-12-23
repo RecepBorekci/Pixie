@@ -13,6 +13,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_editor/widgets/edit_image_viewmodel.dart';
 import 'package:photofilters/photofilters.dart';
+import '../widgets/cartoon_selfie_elements.dart';
 import "../widgets/filter_elements.dart";
 import 'dart:async';
 import 'package:path/path.dart';
@@ -168,244 +169,407 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.star_border_purple500_outlined,
                     text: 'Special',
                     onPressed: () {
-                      showModalBottomSheet(
-                          barrierColor: Colors.white.withOpacity(0),
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(35))),
-                          context: context,
-                          builder: (context) => SizedBox(
-                                height: 70,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: [
-                                    ListviewElements(
-                                      icon: Icons.remove,
-                                      text: 'Remove BG',
-                                      onPressed: () async {
-                                        Uint8List bytes = await featuresHelper
-                                            .removeBackground(
-                                                widget.ximage.path);
-
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return ApiTestScreen(
-                                            originalImage: Image.file(
-                                                File(widget.ximage.path)),
-                                            testImage: Image.memory(
-                                              bytes,
-                                            ),
-                                          );
-                                        }));
-                                      },
-                                    ),
-                                    ListviewElements(
-                                      icon: Icons.face_outlined,
-                                      text: 'Face Cutout',
-                                      onPressed: () {
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            Uint8List bytes =
-                                                await featuresHelper.cutoutFace(
-                                                    widget.ximage.path);
-
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return ApiTestScreen(
-                                                originalImage: Image.file(
-                                                    File(widget.ximage.path)),
-                                                testImage: Image.memory(
-                                                  bytes,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }));
-                                          },
-                                          child: Text(
-                                              'DO NOT Press Me!!! I am face cutout'),
-                                        );
-                                      },
-                                    ),
-                                    ListviewElements(
-                                      icon: Icons.color_lens_outlined,
-                                      text: 'Correct Color',
-                                      onPressed: () {
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            Uint8List bytes =
-                                                await featuresHelper
-                                                    .correctColor(
-                                                        widget.ximage.path);
-
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return ApiTestScreen(
-                                                originalImage: Image.file(
-                                                    File(widget.ximage.path)),
-                                                testImage: Image.memory(
-                                                  bytes,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }));
-                                          },
-                                          child: Text(
-                                              'DO NOT Press Me!!! I am color correction.'),
-                                        );
-                                      },
-                                    ),
-                                    ListviewElements(
-                                      icon: Icons.photo_camera_front_outlined,
-                                      text: 'Make Passport',
-                                      onPressed: () {
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            Image passportImage =
-                                                await featuresHelper
-                                                    .passportPhotoMethod(
-                                                        widget.ximage.path);
-
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return ApiTestScreen(
-                                                originalImage: Image.file(
-                                                    File(widget.ximage.path)),
-                                                testImage: passportImage,
-                                              );
-                                            }));
-                                          },
-                                          child: Text(
-                                              'DO NOT Press Me!!! I am passport photo maker.'),
-                                        );
-                                      },
-                                    ),
-                                    ListviewElements(
-                                      icon: Icons.image_outlined,
-                                      text: 'Image Retouch',
-                                      onPressed: () {
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            Image passportImage =
-                                                await featuresHelper
-                                                    .retouchImage(
-                                                        widget.ximage.path);
-
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return ApiTestScreen(
-                                                originalImage: Image.file(
-                                                    File(widget.ximage.path)),
-                                                testImage: passportImage,
-                                              );
-                                            }));
-                                          },
-                                          child: Text(
-                                              'DO NOT Press Me!!! I am image retouch.'),
-                                        );
-                                      },
-                                    ),
-                                    ListviewElements(
-                                      icon: Icons.perm_identity_outlined,
-                                      text: 'Cartoon Selfie',
-                                      onPressed: () {
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            Uint8List bytes =
-                                                await featuresHelper
-                                                    .cartoonSelfieMethod(
-                                                        widget.ximage.path,
-                                                        cartoonSelfieType);
-
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return ApiTestScreen(
-                                                originalImage: Image.file(
-                                                    File(widget.ximage.path)),
-                                                testImage: Image.memory(
-                                                  bytes,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }));
-                                          },
-                                          child: Text(
-                                              'DO NOT Press Me!!! I am cartoon selfie. (2 Credits)'),
-                                        );
-                                      },
-                                    ),
-                                    ListviewElements(
-                                      icon: Icons.perm_identity_outlined,
-                                      text: 'Enhance Photo',
-                                      onPressed: () {
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            Uint8List bytes =
-                                                await featuresHelper
-                                                    .photoEnhancerMethod(
-                                                        widget.ximage.path);
-
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return ApiTestScreen(
-                                                originalImage: Image.file(
-                                                    File(widget.ximage.path)),
-                                                testImage: Image.memory(
-                                                  bytes,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }));
-                                          },
-                                          child: Text(
-                                              'DO NOT Press Me!!! I am photo enhancer. (2 Credits)'),
-                                        );
-                                      },
-                                    ),
-                                    ListviewElements(
-                                      icon: Icons.perm_identity_outlined,
-                                      text: 'Enhance Photo',
-                                      onPressed: () {
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            Uint8List bytes =
-                                                await featuresHelper
-                                                    .photoColorizerMethod(
-                                                        widget.ximage.path);
-
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return ApiTestScreen(
-                                                originalImage: Image.file(
-                                                    File(widget.ximage.path)),
-                                                testImage: Image.memory(
-                                                  bytes,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }));
-                                          },
-                                          child: Text(
-                                              'DO NOT Press Me!!! I am photo colorizer. (2 Credits)'),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ));
+                      createSpecialsElements(
+                          context, featuresHelper, widget.ximage.path);
                     },
                   ),
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  createSpecialsElements(
+      BuildContext context, CutOutProFeatures helper, String path) async {
+    showModalBottomSheet(
+        barrierColor: Colors.white.withOpacity(0),
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(35))),
+        context: context,
+        builder: (context) => SizedBox(
+              height: 70,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ListviewElements(
+                    icon: Icons.remove,
+                    text: 'Remove BG',
+                    onPressed: () async {
+                      Uint8List bytes = await helper.removeBackground(path);
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ApiTestScreen(
+                          originalImage: Image.file(File(path)),
+                          testImage: Image.memory(
+                            bytes,
+                          ),
+                        );
+                      }));
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.face_outlined,
+                    text: 'Face Cutout',
+                    onPressed: () {
+                      ElevatedButton(
+                        onPressed: () async {
+                          Uint8List bytes = await helper.cutoutFace(path);
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ApiTestScreen(
+                              originalImage: Image.file(File(path)),
+                              testImage: Image.memory(
+                                bytes,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          }));
+                        },
+                        child: Text('DO NOT Press Me!!! I am face cutout'),
+                      );
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.color_lens_outlined,
+                    text: 'Correct Color',
+                    onPressed: () {
+                      ElevatedButton(
+                        onPressed: () async {
+                          Uint8List bytes = await helper.correctColor(path);
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ApiTestScreen(
+                              originalImage: Image.file(File(path)),
+                              testImage: Image.memory(
+                                bytes,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          }));
+                        },
+                        child:
+                            Text('DO NOT Press Me!!! I am color correction.'),
+                      );
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.photo_camera_front_outlined,
+                    text: 'Make Passport',
+                    onPressed: () {
+                      ElevatedButton(
+                        onPressed: () async {
+                          Image passportImage =
+                              await helper.passportPhotoMethod(path);
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ApiTestScreen(
+                              originalImage: Image.file(File(path)),
+                              testImage: passportImage,
+                            );
+                          }));
+                        },
+                        child: Text(
+                            'DO NOT Press Me!!! I am passport photo maker.'),
+                      );
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.image_outlined,
+                    text: 'Image Retouch',
+                    onPressed: () {
+                      ElevatedButton(
+                        onPressed: () async {
+                          Image passportImage = await helper.retouchImage(path);
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ApiTestScreen(
+                              originalImage: Image.file(File(path)),
+                              testImage: passportImage,
+                            );
+                          }));
+                        },
+                        child: Text('DO NOT Press Me!!! I am image retouch.'),
+                      );
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.perm_identity_outlined,
+                    text: 'Cartoon Selfie',
+                    onPressed: () async {
+                      await createCartoonSelfieElements(context, helper, path);
+                      // ElevatedButton(
+                      //   onPressed: () async {
+                      //     Uint8List bytes = await helper.cartoonSelfieMethod(
+                      //         path, cartoonSelfieType);
+                      //
+                      //     Navigator.push(context,
+                      //         MaterialPageRoute(builder: (context) {
+                      //       return ApiTestScreen(
+                      //         originalImage: Image.file(File(path)),
+                      //         testImage: Image.memory(
+                      //           bytes,
+                      //           fit: BoxFit.cover,
+                      //         ),
+                      //       );
+                      //     }));
+                      //   },
+                      //   child: Text(
+                      //       'DO NOT Press Me!!! I am cartoon selfie. (2 Credits)'),
+                      // );
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.perm_identity_outlined,
+                    text: 'Enhance Photo',
+                    onPressed: () {
+                      ElevatedButton(
+                        onPressed: () async {
+                          Uint8List bytes =
+                              await helper.photoEnhancerMethod(path);
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ApiTestScreen(
+                              originalImage: Image.file(File(path)),
+                              testImage: Image.memory(
+                                bytes,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          }));
+                        },
+                        child: Text(
+                            'DO NOT Press Me!!! I am photo enhancer. (2 Credits)'),
+                      );
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.perm_identity_outlined,
+                    text: 'Colorize Photo',
+                    onPressed: () {
+                      ElevatedButton(
+                        onPressed: () async {
+                          Uint8List bytes =
+                              await helper.photoColorizerMethod(path);
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ApiTestScreen(
+                              originalImage: Image.file(File(path)),
+                              testImage: Image.memory(
+                                bytes,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          }));
+                        },
+                        child: Text(
+                            'DO NOT Press Me!!! I am photo colorizer. (2 Credits)'),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  createCartoonSelfieElements(
+      BuildContext context, CutOutProFeatures helper, String path) async {
+    showModalBottomSheet(
+      barrierColor: Colors.white.withOpacity(0),
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(),
+      context: context,
+      builder: (context) => SizedBox(
+        height: 70,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            CartoonSelfieElements(
+                buttonName: '0',
+                buttonImage: Image.asset('assets/images/image0.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 0);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '1',
+                buttonImage: Image.asset('assets/images/image1.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 1);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '2',
+                buttonImage: Image.asset('assets/images/image2.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 2);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '3',
+                buttonImage: Image.asset('assets/images/image3.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 3);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '4',
+                buttonImage: Image.asset('assets/images/image4.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 4);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '5',
+                buttonImage: Image.asset('assets/images/image5.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 5);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '6',
+                buttonImage: Image.asset('assets/images/image6.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 6);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '7',
+                buttonImage: Image.asset('assets/images/image7.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 7);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '8',
+                buttonImage: Image.asset('assets/images/image8.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 8);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '9',
+                buttonImage: Image.asset('assets/images/image9.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 9);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
+            CartoonSelfieElements(
+                buttonName: '10',
+                buttonImage: Image.asset('assets/images/image10.jpg'),
+                onPressed: () async {
+                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 10);
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ApiTestScreen(
+                      originalImage: Image.file(File(path)),
+                      testImage: Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }));
+                }),
           ],
         ),
       ),
