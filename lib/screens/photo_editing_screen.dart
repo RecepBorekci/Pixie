@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-// import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_editor/screens/api_test_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
@@ -18,6 +17,8 @@ import "../widgets/filter_elements.dart";
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:image/image.dart' as imageLib;
+import 'package:image_cropper/image_cropper.dart';
+import 'package:photo_editor/models/palette.dart';
 
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
@@ -34,6 +35,8 @@ bool isFilterSelected = false;
 class _PhotoEditingScreenState extends EditImageViewModel {
   late String fileName;
   late int cartoonSelfieType;
+
+  late File editedImageFile;
 
   List<Filter> filters = presetFiltersList;
   Future getImage(context) async {
@@ -61,8 +64,41 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       print(widget.imageFile.path);
     }
     setState(() {
-      widget.ximage = XFile(widget.imageFile.path);
+      editedImageFile = File(widget.imageFile.path);
     });
+  }
+
+  Future<CroppedFile?> cropImage(File imageFile) async {
+    try {
+      CroppedFile? croppedFile = await ImageCropper.platform.cropImage(
+          sourcePath: imageFile.path,
+          aspectRatioPresets: const [
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+          compressFormat: ImageCompressFormat.png,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              lockAspectRatio: false,
+              statusBarColor: Palette.purpleLight.shade400,
+              toolbarColor: Palette.purpleLight.shade600,
+              toolbarWidgetColor: Colors.white,
+              backgroundColor: Palette.appBackground,
+              cropFrameColor: Palette.purpleLight.shade900,
+              cropGridColor: Colors.white,
+              activeControlsWidgetColor: Palette.purpleLight,
+              cropFrameStrokeWidth: 10,
+            )
+          ]);
+
+      return croppedFile;
+    } catch (e) {
+      print(e);
+    }
   }
 
   CutOutProFeatures featuresHelper = CutOutProFeatures();
@@ -75,11 +111,12 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 
   String imageData = '';
 
-  // Future cropImage(File imageFile) async {
-  //   await ImageCropper.platform.cropImage(
-  //     sourcePath: imageFile.path,
-  //   );
-  // }
+  @override
+  void initState() {
+    super.initState();
+
+    editedImageFile = File(widget.ximage.path);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,9 +148,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-              child: Image.file(
-                File(widget.ximage.path),
-              ),
+              child: Image.file(editedImageFile),
               fit: FlexFit.tight,
             ),
             Container(
@@ -144,8 +179,17 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.crop,
                     text: 'Crop',
-                    onPressed: () {
-                      // await cropImage(File(widget.image.path));
+                    onPressed: () async {
+                      try {
+                        CroppedFile? croppedImage =
+                            await cropImage(editedImageFile);
+
+                        setState(() {
+                          editedImageFile = File(croppedImage!.path);
+                        });
+                      } catch (e) {
+                        print(e);
+                      }
                     },
                   ),
                   ListviewElements(

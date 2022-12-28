@@ -42,6 +42,7 @@ dependencies:
   image_gallery_saver: ^1.7.1
   screenshot: ^1.2.3
   mime: ^1.0.3
+  image_cropper: ^3.0.1
 
 
 dev_dependencies:
