@@ -44,7 +44,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   List<Filter> filters = presetFiltersList;
   Future getImage(context) async {
     fileName = basename(widget.imageFile.path);
-    var image = imageLib.decodeImage(widget.imageFile.readAsBytesSync());
+    var image = imageLib.decodeImage(editedImageFile.readAsBytesSync());
     image = imageLib.copyResize(image!, width: 600);
     Map imagefile = await Navigator.push(
       context,
@@ -59,7 +59,6 @@ class _PhotoEditingScreenState extends EditImageViewModel {
         ),
       ),
     );
-    XFile newImage = new XFile(imagefile['image_filtered'].toString());
     if (imagefile != null) {
       setState(() {
         widget.imageFile = imagefile['image_filtered'];
@@ -139,8 +138,8 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               Icons.save,
               color: Colors.white,
             ),
-            onPressed: () {
-              GallerySaver.saveImage(widget.ximage.path);
+            onPressed: () async {
+              await GallerySaver.saveImage(editedImageFile.path);
               final snackBar = SnackBar(
                 content: Text('Image Saved'),
                 duration: Duration(seconds: 2),
