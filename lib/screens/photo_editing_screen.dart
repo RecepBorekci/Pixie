@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+// import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_editor/screens/api_test_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
@@ -14,11 +15,13 @@ import 'package:photo_editor/widgets/edit_image_viewmodel.dart';
 import 'package:photofilters/photofilters.dart';
 import '../widgets/cartoon_selfie_elements.dart';
 import "../widgets/filter_elements.dart";
+import 'package:gallery_saver/gallery_saver.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:image/image.dart' as imageLib;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_editor/models/palette.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
@@ -136,7 +139,15 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               Icons.save,
               color: Colors.white,
             ),
-            onPressed: () => saveToGallery(context),
+            onPressed: () {
+              GallerySaver.saveImage(widget.ximage.path);
+              final snackBar = SnackBar(
+                content: Text('Image Saved'),
+                duration: Duration(seconds: 2),
+                backgroundColor: Colors.black38,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
             tooltip: 'Save Image',
           )
         ],
