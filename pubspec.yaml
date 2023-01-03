@@ -44,6 +44,7 @@ dependencies:
   screenshot: ^1.2.3
   mime: ^1.0.3
   image_cropper: ^3.0.1
+  path: ^1.8.2
 
 
 dev_dependencies:

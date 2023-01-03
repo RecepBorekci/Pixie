@@ -149,37 +149,29 @@ class CutOutProFeatures {
     }
   }
 
-  Future<Image> passportPhotoMethod(String path) async {
+  Future<Uint8List> passportPhotoMethod(String path) async {
     try {
       String data = (await uploadImagePassportPhoto(path)).body;
 
-      print(data);
-
       String imageURL = jsonDecode(data)['data']['idPhotoImage'];
 
-      print(imageURL);
+      http.Response response = await http.get(Uri.parse(imageURL));
 
-      Image image = Image.network(imageURL);
-
-      return image;
+      return response.bodyBytes;
     } catch (e) {
       return Future.error(e);
     }
   }
 
-  Future<Image> retouchImage(String path) async {
+  Future<Uint8List> retouchImage(String path) async {
     try {
       String data = (await uploadImageForImageRetouch(path)).body;
 
-      print(data);
-
       String imageURL = jsonDecode(data)['data']['imageUrl'];
 
-      print(imageURL);
+      http.Response response = await http.get(Uri.parse(imageURL));
 
-      Image image = Image.network(imageURL);
-
-      return image;
+      return response.bodyBytes;
     } catch (e) {
       return Future.error(e);
     }

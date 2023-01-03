@@ -1,9 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-// import 'package:image_cropper/image_cropper.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_editor/screens/api_test_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 import 'package:photo_editor/services/cut_out_pro_features.dart';
 import 'dart:io';
@@ -22,6 +23,7 @@ import 'package:image/image.dart' as imageLib;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_editor/models/palette.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
@@ -105,12 +107,6 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 
   CutOutProFeatures featuresHelper = CutOutProFeatures();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getBackgroundRemover();
-  // }
-
   String imageData = '';
 
   @override
@@ -148,7 +144,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
             tooltip: 'Save Image',
-          )
+          ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -158,8 +154,8 @@ class _PhotoEditingScreenState extends EditImageViewModel {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-              child: Image.file(editedImageFile),
               fit: FlexFit.tight,
+              child: Image.file(editedImageFile),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
@@ -222,9 +218,9 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.star_border_purple500_outlined,
                     text: 'Special',
-                    onPressed: () {
-                      createSpecialsElements(
-                          context, featuresHelper, widget.ximage.path);
+                    onPressed: () async {
+                      await createSpecialsElements(
+                          context, featuresHelper, editedImageFile.path);
                     },
                   ),
                 ],
@@ -236,27 +232,12 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     );
   }
 
-  void pushTestScreenWithImageBytes(
-      BuildContext context, String path, Uint8List bytes) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ApiTestScreen(
-        originalImage: Image.file(File(path)),
-        testImage: Image.memory(
-          bytes,
-          fit: BoxFit.cover,
-        ),
-      );
-    }));
-  }
-
-  void pushTestScreenWithImage(
-      BuildContext context, String path, Image passportImage) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ApiTestScreen(
-        originalImage: Image.file(File(path)),
-        testImage: passportImage,
-      );
-    }));
+  Future<String> _createFileFromString(Uint8List bytes) async {
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    File file = File(
+        "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".png");
+    await file.writeAsBytes(bytes);
+    return file.path;
   }
 
   createSpecialsElements(
@@ -278,7 +259,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     onPressed: () async {
                       Uint8List bytes = await helper.removeBackground(path);
 
-                      pushTestScreenWithImageBytes(context, path, bytes);
+                      String newPath = await _createFileFromString(bytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
                     },
                   ),
                   ListviewElements(
@@ -287,7 +272,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     onPressed: () async {
                       Uint8List bytes = await helper.cutoutFace(path);
 
-                      pushTestScreenWithImageBytes(context, path, bytes);
+                      String newPath = await _createFileFromString(bytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
                     },
                   ),
                   ListviewElements(
@@ -296,26 +285,37 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     onPressed: () async {
                       Uint8List bytes = await helper.correctColor(path);
 
-                      pushTestScreenWithImageBytes(context, path, bytes);
+                      String newPath = await _createFileFromString(bytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
                     },
                   ),
                   ListviewElements(
                     icon: Icons.photo_camera_front_outlined,
                     text: 'Make Passport',
                     onPressed: () async {
-                      Image passportImage =
-                          await helper.passportPhotoMethod(path);
+                      Uint8List bytes = await helper.passportPhotoMethod(path);
 
-                      pushTestScreenWithImage(context, path, passportImage);
+                      String newPath = await _createFileFromString(bytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
                     },
                   ),
                   ListviewElements(
                     icon: Icons.image_outlined,
                     text: 'Image Retouch',
                     onPressed: () async {
-                      Image imageRetouch = await helper.retouchImage(path);
+                      Uint8List bytes = await helper.retouchImage(path);
 
-                      pushTestScreenWithImage(context, path, imageRetouch);
+                      String newPath = await _createFileFromString(bytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
                     },
                   ),
                   ListviewElements(
@@ -331,7 +331,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     onPressed: () async {
                       Uint8List bytes = await helper.photoEnhancerMethod(path);
 
-                      pushTestScreenWithImageBytes(context, path, bytes);
+                      String newPath = await _createFileFromString(bytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
                     },
                   ),
                   ListviewElements(
@@ -340,7 +344,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     onPressed: () async {
                       Uint8List bytes = await helper.photoColorizerMethod(path);
 
-                      pushTestScreenWithImageBytes(context, path, bytes);
+                      String newPath = await _createFileFromString(bytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
                     },
                   ),
                 ],
@@ -366,7 +374,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 0);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '1',
@@ -374,7 +386,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 1);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '2',
@@ -382,7 +398,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 2);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '3',
@@ -390,7 +410,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 3);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '4',
@@ -398,7 +422,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 4);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '5',
@@ -406,7 +434,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 5);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '6',
@@ -414,7 +446,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 6);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '7',
@@ -422,7 +458,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 7);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '8',
@@ -430,7 +470,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 8);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '9',
@@ -438,7 +482,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 9);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
             CartoonSelfieElements(
                 buttonName: '10',
@@ -446,7 +494,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 onPressed: () async {
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 10);
 
-                  pushTestScreenWithImageBytes(context, path, bytes);
+                  String newPath = await _createFileFromString(bytes);
+
+                  setState(() {
+                    editedImageFile = File(newPath);
+                  });
                 }),
           ],
         ),
