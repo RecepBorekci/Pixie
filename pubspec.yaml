@@ -45,6 +45,7 @@ dependencies:
   mime: ^1.0.3
   image_cropper: ^3.0.1
   path: ^1.8.2
+  painter: ^2.0.0
 
 
 dev_dependencies:

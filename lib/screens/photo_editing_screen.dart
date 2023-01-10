@@ -5,6 +5,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_editor/screens/color_picker.dart';
+import 'package:photo_editor/screens/drawing_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 import 'package:photo_editor/services/cut_out_pro_features.dart';
 import 'dart:io';
@@ -24,6 +26,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_editor/models/palette.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
+import 'dart:ui' as ui;
+import 'package:painter/painter.dart';
 
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
@@ -40,8 +44,16 @@ bool isFilterSelected = false;
 class _PhotoEditingScreenState extends EditImageViewModel {
   late String fileName;
   late int cartoonSelfieType;
-
   late File editedImageFile;
+
+  PainterController _controller = _newController();
+
+  static PainterController _newController() {
+    PainterController controller = new PainterController();
+    controller.thickness = 5.0;
+    controller.backgroundColor = Colors.green;
+    return controller;
+  }
 
   List<Filter> filters = presetFiltersList;
   Future getImage(context) async {
@@ -213,7 +225,39 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.color_lens_outlined,
                     text: 'Color',
-                    onPressed: () {},
+                    onPressed: () async {
+                      Uint8List drawnImageBytes;
+                      drawnImageBytes = await Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return DrawingScreen(Image.file(editedImageFile));
+                      }));
+                      String newPath =
+                          await _createFileFromString(drawnImageBytes);
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
+
+                      // showModalBottomSheet(
+                      //     context: context,
+                      //     builder: (context) {
+                      //       // return ColorPicker(300);
+                      //       return SizedBox(
+                      //         height: 70,
+                      //         child: ListView(
+                      //           children: [
+                      //             ListviewElements(
+                      //                 icon: Icons.brush,
+                      //                 text: 'Draw',
+                      //                 onPressed: () {}),
+                      //             ListviewElements(
+                      //                 icon: Icons.brush,
+                      //                 text: 'Draw',
+                      //                 onPressed: () {}),
+                      //           ],
+                      //         ),
+                      //       );
+                      //     });
+                    },
                   ),
                   ListviewElements(
                     icon: Icons.star_border_purple500_outlined,
