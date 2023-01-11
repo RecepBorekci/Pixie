@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,10 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+  bool isThereEditedPhotos = false;
+
+  List<String>? _photosURLs;
 
   User? loggedInUser;
 
@@ -24,6 +29,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
+    if (loggedInUser != null) {
+      getUserPhotosURL(loggedInUser!.uid);
+    } else {
+      print("no user :(");
+    }
   }
 
   void getCurrentUser() {
@@ -34,6 +44,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> getUserPhotosURL(String userID) async {
+    await for (var snapshot
+        in _firestore.collection("edited_photos").snapshots()) {
+      for (var document in snapshot.docs) {
+        if (document.get("id") == userID) {
+          document.get("photoURL");
+          isThereEditedPhotos = true;
+        }
+      }
     }
   }
 
@@ -180,25 +202,85 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(20)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    HomeButton(
-                      onPressed: pickImage,
-                      source: ImageSource.gallery,
-                      icon: Icons.photo,
-                      text: "Gallery",
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.pink,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        HomeButton(
+                          onPressed: pickImage,
+                          source: ImageSource.gallery,
+                          icon: Icons.photo,
+                          text: "Gallery",
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.pink,
+                        ),
+                        HomeButton(
+                          onPressed: pickImage,
+                          source: ImageSource.camera,
+                          icon: Icons.photo_camera,
+                          text: "Camera",
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.cyan,
+                        ),
+                      ],
                     ),
-                    HomeButton(
-                      onPressed: pickImage,
-                      source: ImageSource.camera,
-                      icon: Icons.photo_camera,
-                      text: "Camera",
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.cyan,
+                    Text(
+                      "Recent",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontFamily: "Courgette",
+                        fontSize: 20,
+                        color: Palette.darkTextColor,
+                      ),
                     ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream:
+                            _firestore.collection('edited_photos').snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          final photos = snapshot.data!.docs;
+                          List<Widget> imageWidgets = [];
+
+                          for (var photo in photos) {
+                            final photoURL = photo.get('photoURL');
+                            final createdAtTimestamp =
+                                photo.get('createdAt') as Timestamp;
+
+                            DateTime createdAtDate =
+                                createdAtTimestamp.toDate();
+
+                            final imageWidget = ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.network(
+                                    photoURL,
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                  Text(createdAtDate.toString())
+                                ],
+                              ),
+                            );
+
+                            imageWidgets.add(imageWidget);
+                          }
+
+                          return SizedBox(
+                            height: 370,
+                            child: ListView(
+                                itemExtent: 125.0,
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 20.0),
+                                children: imageWidgets),
+                          );
+                        })
                   ],
                 ),
               ),

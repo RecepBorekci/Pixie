@@ -166,7 +166,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 "id": _auth.currentUser!.uid,
                 "email": _auth.currentUser!.email,
                 "username": _auth.currentUser!.displayName,
-                "photo": imageURL,
+                "photoURL": imageURL,
                 "createdAt": FieldValue.serverTimestamp(),
               });
               final snackBar = SnackBar(
