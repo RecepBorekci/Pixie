@@ -18,7 +18,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final _auth = FirebaseAuth.instance;
 
-  late User loggedInUser;
+  User? loggedInUser;
 
   @override
   void initState() {
@@ -80,6 +80,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     color: Palette.darkTextColor,
                     fontWeight: FontWeight.w900),
               ),
+            ),
+            Text(
+              "Welcome ${loggedInUser?.displayName ?? "No username"}",
+              style: TextStyle(fontSize: 30),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),

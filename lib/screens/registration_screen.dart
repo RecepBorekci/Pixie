@@ -89,12 +89,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  final user = await _auth.createUserWithEmailAndPassword(
+                  final result = await _auth.createUserWithEmailAndPassword(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
-                  if (user != null) {
+                  if (result != null) {
                     print('success');
+                    User? user = result.user;
+                    await user!.updateDisplayName(usernameController.text);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return WelcomeScreen();
