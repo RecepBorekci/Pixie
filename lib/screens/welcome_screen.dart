@@ -235,8 +235,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream:
-                            _firestore.collection('edited_photos').snapshots(),
+                        stream: _firestore
+                            .collection('edited_photos')
+                            .orderBy("createdAt")
+                            .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return Center(
@@ -274,6 +276,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           return SizedBox(
                             height: 370,
                             child: ListView(
+                                reverse: true,
                                 itemExtent: 125.0,
                                 scrollDirection: Axis.horizontal,
                                 padding: EdgeInsets.symmetric(
