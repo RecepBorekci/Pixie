@@ -2,7 +2,7 @@
     package="com.example.photo_editor">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="photo_editor"
+        android:label="Pixie"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
