@@ -2,6 +2,9 @@
 
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -45,6 +48,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   late String fileName;
   late int cartoonSelfieType;
   late File editedImageFile;
+
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+  final _storage = FirebaseStorage.instance;
+  late String imageURL;
 
   PainterController _controller = _newController();
 
@@ -148,6 +156,19 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             ),
             onPressed: () async {
               await GallerySaver.saveImage(editedImageFile.path);
+              final _ref = _storage
+                  .ref()
+                  .child("user_images")
+                  .child(DateTime.now().toString() + "jpg");
+              await _ref.putFile(editedImageFile);
+              imageURL = await _ref.getDownloadURL();
+              _firestore.collection("edited_photos").add({
+                "id": _auth.currentUser!.uid,
+                "email": _auth.currentUser!.email,
+                "username": _auth.currentUser!.displayName,
+                "photo": imageURL,
+                "createdAt": FieldValue.serverTimestamp(),
+              });
               final snackBar = SnackBar(
                 content: Text('Image Saved'),
                 duration: Duration(seconds: 2),
