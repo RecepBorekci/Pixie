@@ -141,7 +141,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             Center(
                 child: Text(
-              "Version: 0.2.0-beta",
+              "Version: 1.5.8-beta",
               style: TextStyle(color: Colors.grey),
             )),
           ],
@@ -224,6 +224,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         stream: _firestore
                             .collection('edited_photos')
                             .orderBy("createdAt", descending: true)
+                            .where('id', isEqualTo: loggedInUser!.uid)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
