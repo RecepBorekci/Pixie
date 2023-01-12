@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:photo_editor/screens/registration_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,6 +25,29 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Flexible(
+                child: Image.asset(
+              'assets/logos/logo_on_the_login.png',
+              height: 200,
+              width: 200,
+            )),
+            Text(
+              "Welcome to Pixie!",
+              style: TextStyle(
+                fontFamily: "Proxima Nova",
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            ),
+            Text(
+              "Talk your imagination!",
+              style: TextStyle(
+                fontFamily: "Proxima Nova",
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w500,
+                fontSize: 20.0,
+              ),
+            ),
             TextField(
               controller: emailOrUsernameController,
               keyboardType: TextInputType.emailAddress,
@@ -82,6 +106,33 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               },
               child: Text('Log in'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Not a member yet?",
+                  style: TextStyle(
+                    fontFamily: "Proxima Nova",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15.0,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RegistrationScreen()));
+                  },
+                  child: Text(
+                    "Register now",
+                    style: TextStyle(
+                      fontFamily: "Proxima Nova",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                )
+              ],
             ),
           ],
         ),

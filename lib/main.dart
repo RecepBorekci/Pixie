@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:photo_editor/screens/login_screen.dart';
-import 'package:photo_editor/screens/opening_screen.dart';
 import 'package:photo_editor/screens/registration_screen.dart';
 import 'package:photo_editor/screens/photo_editing_screen.dart';
 
@@ -28,9 +27,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Palette.purpleLight,
         fontFamily: "Nunito",
       ),
-      home: OpeningScreen(),
+      initialRoute: '/login',
       routes: {
-        '/opening': (context) => OpeningScreen(),
         '/login': (context) => LoginScreen(),
         '/registration': (context) => RegistrationScreen(),
         '/welcome': (context) => WelcomeScreen(),

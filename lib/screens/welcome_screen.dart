@@ -83,10 +83,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     fontWeight: FontWeight.w900),
               ),
             ),
-            Text(
-              "Welcome ${loggedInUser?.displayName ?? "No username"}",
-              style: TextStyle(fontSize: 30),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
               child: Container(
@@ -175,7 +171,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     fontWeight: FontWeight.w900),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+              Text(
+                "Welcome ${loggedInUser?.displayName ?? "No username"}",
+                style: TextStyle(fontSize: 30),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
               ),
               Container(
                 padding: EdgeInsets.all(15),
@@ -205,12 +208,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.03,
+                    ),
                     Text(
                       "Recent",
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontFamily: "Courgette",
-                        fontSize: 20,
+                        fontSize: 25.0,
                         color: Palette.darkTextColor,
                       ),
                     ),
@@ -254,7 +260,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           }
 
                           return SizedBox(
-                            height: 370,
+                            height: 300,
                             child: ListView(
                                 itemExtent: 125.0,
                                 scrollDirection: Axis.horizontal,
