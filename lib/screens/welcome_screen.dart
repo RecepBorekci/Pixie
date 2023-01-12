@@ -19,9 +19,6 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  bool isThereEditedPhotos = false;
-
-  List<String>? _photosURLs;
 
   User? loggedInUser;
 
@@ -29,11 +26,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
-    if (loggedInUser != null) {
-      getUserPhotosURL(loggedInUser!.uid);
-    } else {
-      print("no user :(");
-    }
   }
 
   void getCurrentUser() {
@@ -44,18 +36,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       }
     } catch (e) {
       print(e);
-    }
-  }
-
-  Future<void> getUserPhotosURL(String userID) async {
-    await for (var snapshot
-        in _firestore.collection("edited_photos").snapshots()) {
-      for (var document in snapshot.docs) {
-        if (document.get("id") == userID) {
-          document.get("photoURL");
-          isThereEditedPhotos = true;
-        }
-      }
     }
   }
 
@@ -237,7 +217,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     StreamBuilder<QuerySnapshot>(
                         stream: _firestore
                             .collection('edited_photos')
-                            .orderBy("createdAt")
+                            .orderBy("createdAt", descending: true)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
@@ -250,11 +230,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
                           for (var photo in photos) {
                             final photoURL = photo.get('photoURL');
-                            final createdAtTimestamp =
-                                photo.get('createdAt') as Timestamp;
+                            final createdAtTimestamp = photo.get('createdAt');
 
-                            DateTime createdAtDate =
-                                createdAtTimestamp.toDate();
+                            DateTime createdAtDate = createdAtTimestamp == null
+                                ? DateTime.now()
+                                : createdAtTimestamp.toDate();
 
                             final imageWidget = ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
@@ -276,7 +256,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           return SizedBox(
                             height: 370,
                             child: ListView(
-                                reverse: true,
                                 itemExtent: 125.0,
                                 scrollDirection: Axis.horizontal,
                                 padding: EdgeInsets.symmetric(
