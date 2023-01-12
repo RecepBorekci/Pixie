@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,8 +9,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_editor/screens/color_picker.dart';
-import 'package:photo_editor/screens/drawing_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 import 'package:photo_editor/services/cut_out_pro_features.dart';
 import 'dart:io';
@@ -29,8 +28,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_editor/models/palette.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
-import 'dart:ui' as ui;
-import 'package:painter/painter.dart';
+import '../widgets/image_filter.dart';
+import 'package:image/image.dart' as img;
 
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
@@ -48,20 +47,17 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   late String fileName;
   late int cartoonSelfieType;
   late File editedImageFile;
+  late File newEditedImageFile;
+  late var decodedImage;
+  late img.Image imgImage;
+  late img.Image newImage;
 
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
   late String imageURL;
 
-  PainterController _controller = _newController();
-
-  static PainterController _newController() {
-    PainterController controller = new PainterController();
-    controller.thickness = 5.0;
-    controller.backgroundColor = Colors.green;
-    return controller;
-  }
+  double contrastSliderValue = 20;
 
   List<Filter> filters = presetFiltersList;
   Future getImage(context) async {
@@ -134,6 +130,15 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     super.initState();
 
     editedImageFile = File(widget.ximage.path);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      decodeImage();
+    });
+  }
+
+  void decodeImage() async {
+    decodedImage =
+        await decodeImageFromList(widget.imageFile.readAsBytesSync());
+    imgImage = img.Image(decodedImage.width, decodedImage.height);
   }
 
   @override
@@ -246,38 +251,104 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.color_lens_outlined,
                     text: 'Color',
-                    onPressed: () async {
-                      Uint8List drawnImageBytes;
-                      drawnImageBytes = await Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return DrawingScreen(Image.file(editedImageFile));
-                      }));
-                      String newPath =
-                          await _createFileFromString(drawnImageBytes);
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-
-                      // showModalBottomSheet(
-                      //     context: context,
-                      //     builder: (context) {
-                      //       // return ColorPicker(300);
-                      //       return SizedBox(
-                      //         height: 70,
-                      //         child: ListView(
-                      //           children: [
-                      //             ListviewElements(
-                      //                 icon: Icons.brush,
-                      //                 text: 'Draw',
-                      //                 onPressed: () {}),
-                      //             ListviewElements(
-                      //                 icon: Icons.brush,
-                      //                 text: 'Draw',
-                      //                 onPressed: () {}),
-                      //           ],
-                      //         ),
-                      //       );
-                      //     });
+                    onPressed: () {},
+                  ),
+                  ListviewElements(
+                    icon: Icons.auto_awesome_sharp,
+                    text: 'Adjust',
+                    onPressed: () {
+                      showModalBottomSheet(
+                        barrierColor: Colors.white.withOpacity(0),
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (context) {
+                          return SizedBox(
+                            height: 70,
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  ListviewElements(
+                                      icon: Icons.contrast,
+                                      text: 'Contrast',
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                            barrierColor:
+                                                Colors.white.withOpacity(0),
+                                            isScrollControlled: true,
+                                            context: context,
+                                            builder: (context) {
+                                              return SizedBox(
+                                                height: 71,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.contrast),
+                                                      Expanded(child:
+                                                          StatefulBuilder(
+                                                              builder: (context,
+                                                                  setState) {
+                                                        return Slider(
+                                                            max: 100,
+                                                            value:
+                                                                contrastSliderValue,
+                                                            onChanged:
+                                                                (double value) {
+                                                              setState(() {
+                                                                contrastSliderValue =
+                                                                    value;
+                                                              });
+                                                            });
+                                                      })),
+                                                      StatefulBuilder(builder:
+                                                          (context, setState) {
+                                                        return IconButton(
+                                                          onPressed: () async {
+                                                            // if (await Permission
+                                                            //         .storage
+                                                            //         .request()
+                                                            //         .isGranted &&
+                                                            //     await Permission
+                                                            //         .manageExternalStorage
+                                                            //         .request()
+                                                            //         .isGranted) {
+                                                            setState(() {
+                                                              newImage = img
+                                                                  .adjustColor(
+                                                                imgImage,
+                                                                contrast: 10,
+                                                              );
+                                                            });
+                                                            newEditedImageFile =
+                                                                await File(widget
+                                                                        .imageFile
+                                                                        .path)
+                                                                    .writeAsBytes(
+                                                                        img.encodeJpg(
+                                                                            newImage));
+                                                            //}
+                                                            setState(() {
+                                                              editedImageFile =
+                                                                  newEditedImageFile;
+                                                              widget.imageFile =
+                                                                  newEditedImageFile;
+                                                            });
+                                                          },
+                                                          icon:
+                                                              Icon(Icons.done),
+                                                        );
+                                                      })
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                      })
+                                ]),
+                          );
+                        },
+                      );
                     },
                   ),
                   ListviewElements(
