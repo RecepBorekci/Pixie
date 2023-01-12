@@ -27,14 +27,15 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Hero(
-              tag: tagForAnimation,
-              child: Flexible(
-                  child: Image.asset(
-                'assets/logos/logo_on_the_login.png',
-                height: 200,
-                width: 200,
-              )),
+            Flexible(
+              child: Hero(
+                tag: tagForAnimation,
+                child: Image.asset(
+                  'assets/logos/logo_on_the_login.png',
+                  height: 200,
+                  width: 200,
+                ),
+              ),
             ),
             Text(
               "Welcome to Pixie!",

@@ -28,14 +28,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Hero(
-              tag: tagForAnimation,
-              child: Flexible(
-                  child: Image.asset(
-                'assets/logos/logo_on_the_login.png',
-                height: 300,
-                width: 300,
-              )),
+            Flexible(
+              child: Hero(
+                tag: tagForAnimation,
+                child: Image.asset(
+                  'assets/logos/logo_on_the_login.png',
+                  height: 300,
+                  width: 300,
+                ),
+              ),
             ),
             Text(
               'Register',

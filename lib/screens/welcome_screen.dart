@@ -224,6 +224,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         stream: _firestore
                             .collection('edited_photos')
                             .orderBy("createdAt", descending: true)
+                            .where('id', isEqualTo: loggedInUser!.uid)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
