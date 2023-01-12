@@ -14,6 +14,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailOrUsernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final tagForAnimation = 'logo in the opening';
+
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -25,12 +27,15 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Flexible(
-                child: Image.asset(
-              'assets/logos/logo_on_the_login.png',
-              height: 200,
-              width: 200,
-            )),
+            Hero(
+              tag: tagForAnimation,
+              child: Flexible(
+                  child: Image.asset(
+                'assets/logos/logo_on_the_login.png',
+                height: 200,
+                width: 200,
+              )),
+            ),
             Text(
               "Welcome to Pixie!",
               style: TextStyle(

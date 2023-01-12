@@ -15,6 +15,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final tagForAnimation = 'logo in the opening';
+
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -26,12 +28,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Hero(
+              tag: tagForAnimation,
+              child: Flexible(
+                  child: Image.asset(
+                'assets/logos/logo_on_the_login.png',
+                height: 300,
+                width: 300,
+              )),
+            ),
+            Text(
+              'Register',
+              style: TextStyle(
+                fontFamily: "Proxima Nova",
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            ),
             TextField(
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
+              controller: usernameController,
+              autocorrect: true,
               textAlign: TextAlign.left,
               decoration: InputDecoration(
-                hintText: 'Enter your e-mail.',
+                hintText: 'Enter your username.',
                 disabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.blueAccent,
@@ -47,11 +66,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
             ),
             TextField(
-              controller: usernameController,
-              autocorrect: true,
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.left,
               decoration: InputDecoration(
-                hintText: 'Enter your username.',
+                hintText: 'Enter your e-mail.',
                 disabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.blueAccent,
@@ -107,6 +126,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 }
               },
               child: Text('Register'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Already have an account?",
+                  style: TextStyle(
+                    fontFamily: "Proxima Nova",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15.0,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Log in",
+                    style: TextStyle(
+                      fontFamily: "Proxima Nova",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                )
+              ],
             ),
           ],
         ),
