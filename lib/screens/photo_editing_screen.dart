@@ -32,6 +32,9 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:painter/painter.dart';
 
+import '../widgets/image_text.dart';
+import 'finish_screen.dart';
+
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
   File imageFile;
@@ -175,6 +178,9 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 backgroundColor: Colors.black38,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return FinishScreen(Image.file(editedImageFile));
+              }));
             },
             tooltip: 'Save Image',
           ),
@@ -188,7 +194,58 @@ class _PhotoEditingScreenState extends EditImageViewModel {
           children: [
             Flexible(
               fit: FlexFit.tight,
-              child: Image.file(editedImageFile),
+              child: Stack(
+                children: [
+                  Image.file(editedImageFile),
+                  for (int i = 0; i < texts.length; i++)
+                    Positioned(
+                      left: texts[i].left,
+                      top: texts[i].top,
+                      child: GestureDetector(
+                        onLongPress: () {
+                          setState(() {
+                            currentIndex = i;
+                            removeText(context);
+                          });
+                        },
+                        onTap: () async {
+                          setCurrentIndex(context, i);
+                          await createTextElements(
+                              context, featuresHelper, editedImageFile.path);
+                        },
+                        //onTap: () => setCurrentIndex(context, i),
+                        child: Draggable(
+                          feedback: ImageText(textInfo: texts[i]),
+                          child: ImageText(textInfo: texts[i]),
+                          onDragEnd: (drag) {
+                            final renderBox =
+                                context.findRenderObject() as RenderBox;
+                            Offset off = renderBox.globalToLocal(drag.offset);
+                            setState(() {
+                              texts[i].top = off.dy - 88;
+                              texts[i].left = off.dx;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  creatorText.text.isNotEmpty
+                      ? Positioned(
+                          left: 0,
+                          bottom: 0,
+                          child: Text(
+                            creatorText.text,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black.withOpacity(
+                                  0.3,
+                                )),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
@@ -241,7 +298,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.text_fields_outlined,
                     text: 'Text',
-                    onPressed: () {},
+                    onPressed: () async {
+                      setState(() {
+                        editedImageFile = editedImageFile;
+                      });
+                      await createTextElements(
+                          context, featuresHelper, editedImageFile.path);
+                    },
                   ),
                   ListviewElements(
                     icon: Icons.color_lens_outlined,
@@ -303,6 +366,223 @@ class _PhotoEditingScreenState extends EditImageViewModel {
         "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".png");
     await file.writeAsBytes(bytes);
     return file.path;
+  }
+
+  createTextElements(
+      BuildContext context, CutOutProFeatures helper, String path) async {
+    showModalBottomSheet(
+        barrierColor: Colors.white.withOpacity(0),
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(35))),
+        context: context,
+        builder: (context) => SizedBox(
+              height: 70,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ListviewElements(
+                    icon: Icons.text_fields_outlined,
+                    text: 'Add Text',
+                    onPressed: () async {
+                      addNewDialog(context);
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.add,
+                    text: 'Font Size',
+                    onPressed: () async {
+                      increaseFontSize();
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.remove,
+                    text: 'Font Size',
+                    onPressed: () async {
+                      decreaseFontSize();
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.format_align_left,
+                    text: 'Align Left',
+                    onPressed: () async {
+                      alignLeft();
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.format_align_center,
+                    text: 'Align Center',
+                    onPressed: () async {
+                      alignCenter();
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.format_align_right,
+                    text: 'Align Right',
+                    onPressed: () async {
+                      alignRight();
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.format_bold,
+                    text: 'Bold',
+                    onPressed: () async {
+                      boldText();
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.format_italic,
+                    text: 'Italic',
+                    onPressed: () async {
+                      italicText();
+                    },
+                  ),
+                  ListviewElements(
+                    icon: Icons.space_bar,
+                    text: 'Add New Line',
+                    onPressed: () async {
+                      addLinesToText();
+                    },
+                  ),
+                  Tooltip(
+                    message: 'Red',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.red),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.red,
+                          )),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'White',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.white),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                          )),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Black',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.black),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.black,
+                          )),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Blue',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.blue),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.blue,
+                          )),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Yellow',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.yellow),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.yellow,
+                          )),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Green',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.green),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.green,
+                          )),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Orange',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.orange),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.orange,
+                          )),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Pink',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.purpleLight,
+                        border: Border.all(),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      width: 80,
+                      height: 50,
+                      child: GestureDetector(
+                          onTap: () => changeTextColor(Colors.pink),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.pink,
+                          )),
+                    ),
+                  ),
+                ],
+              ),
+            ));
   }
 
   createSpecialsElements(

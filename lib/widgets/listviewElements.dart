@@ -15,6 +15,7 @@ class ListviewElements extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
           color: Palette.purpleLight,
@@ -39,7 +40,6 @@ class ListviewElements extends StatelessWidget {
           ],
         ),
       ),
-      onTap: onPressed,
     );
   }
 }

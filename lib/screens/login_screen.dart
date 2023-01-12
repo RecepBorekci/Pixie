@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Text(
-              "Talk your imagination!",
+              "Let your imagination talk!",
               style: TextStyle(
                 fontFamily: "Proxima Nova",
                 fontStyle: FontStyle.italic,
