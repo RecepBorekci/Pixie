@@ -56,7 +56,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   bool isLoading = false;
 
   List<Filter> filters = presetFiltersList;
-  Future getImage(context) async {
+  Future<void> getImage(context) async {
     fileName = basename(widget.imageFile.path);
     var image = imageLib.decodeImage(editedImageFile.readAsBytesSync());
     image = imageLib.copyResize(image!, width: 600);
@@ -176,126 +176,166 @@ class _PhotoEditingScreenState extends EditImageViewModel {
         ],
       ),
       backgroundColor: Colors.white,
-      body: Screenshot(
-        controller: screenshotController,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              fit: FlexFit.tight,
-              child: Image.file(editedImageFile),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.08,
-              color: Colors.orange,
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
+      body: isLoading
+          ? Container(
+              alignment: Alignment.center,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  ListViewElements(
-                    icon: Icons.crop,
-                    text: 'Crop',
-                    onPressed: () async {
-                      try {
-                        CroppedFile? croppedImage =
-                            await cropImage(editedImageFile);
+                  Image.file(editedImageFile),
+                  Center(
+                    child: CircularProgressIndicator(
+                      color: Palette.purpleLight.shade900,
+                    ),
+                  ),
+                  Container(
+                    color: Colors.black.withOpacity(0.5),
+                  )
+                ],
+              ),
+            )
+          : Screenshot(
+              controller: screenshotController,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Image.file(editedImageFile),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    color: Colors.orange,
+                    child: ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        ListViewElements(
+                          icon: Icons.crop,
+                          text: 'Crop',
+                          onPressed: () async {
+                            try {
+                              CroppedFile? croppedImage =
+                                  await cropImage(editedImageFile);
 
-                        setState(() {
-                          editedImageFile = File(croppedImage!.path);
-                        });
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.filter,
-                    text: 'Filter',
-                    onPressed: () {
-                      getImage(context);
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.text_fields_outlined,
-                    text: 'Text',
-                    onPressed: () async {
-                      Uint8List writtenImageBytes =
-                          await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AddTextScreen(fileToAddText: editedImageFile),
+                              setState(() {
+                                editedImageFile = File(croppedImage!.path);
+                              });
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
                         ),
-                      );
+                        ListViewElements(
+                          icon: Icons.filter,
+                          text: 'Filter',
+                          onPressed: () async {
+                            await getImage(context);
+                          },
+                        ),
+                        ListViewElements(
+                          icon: Icons.text_fields_outlined,
+                          text: 'Text',
+                          onPressed: () async {
+                            Uint8List writtenImageBytes =
+                                await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => AddTextScreen(
+                                    fileToAddText: editedImageFile),
+                              ),
+                            );
 
-                      String newPath =
-                          await _createFileFromString(writtenImageBytes);
+                            startLoading();
 
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
+                            String newPath =
+                                await _createFileFromString(writtenImageBytes);
 
-                      // setState(() {
-                      //   editedImageFile = editedImageFile;
-                      // });
-                      // await createTextElements(context, editedImageFile.path);
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.color_lens_outlined,
-                    text: 'Color',
-                    onPressed: () async {
-                      Uint8List drawnImageBytes;
+                            loadingFinished();
 
-                      ui.Image imageInfo = await _getImageInfo();
+                            setState(() {
+                              editedImageFile = File(newPath);
+                            });
 
-                      drawnImageBytes = await Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return DrawingScreen(Image.file(editedImageFile),
-                            imageInfo.height, imageInfo.width);
-                      }));
-                      String newPath =
-                          await _createFileFromString(drawnImageBytes);
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
+                            // setState(() {
+                            //   editedImageFile = editedImageFile;
+                            // });
+                            // await createTextElements(context, editedImageFile.path);
+                          },
+                        ),
+                        ListViewElements(
+                          icon: Icons.color_lens_outlined,
+                          text: 'Color',
+                          onPressed: () async {
+                            Uint8List drawnImageBytes;
 
-                      // showModalBottomSheet(
-                      //     context: context,
-                      //     builder: (context) {
-                      //       // return ColorPicker(300);
-                      //       return SizedBox(
-                      //         height: 70,
-                      //         child: ListView(
-                      //           children: [
-                      //             ListviewElements(
-                      //                 icon: Icons.brush,
-                      //                 text: 'Draw',
-                      //                 onPressed: () {}),
-                      //             ListviewElements(
-                      //                 icon: Icons.brush,
-                      //                 text: 'Draw',
-                      //                 onPressed: () {}),
-                      //           ],
-                      //         ),
-                      //       );
-                      //     });
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.star_border_purple500_outlined,
-                    text: 'Special',
-                    onPressed: () async {
-                      await createSpecialsElements(
-                          context, featuresHelper, editedImageFile.path);
-                    },
+                            ui.Image imageInfo = await _getImageInfo();
+
+                            drawnImageBytes = await Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return DrawingScreen(Image.file(editedImageFile),
+                                  imageInfo.height, imageInfo.width);
+                            }));
+
+                            startLoading();
+
+                            String newPath =
+                                await _createFileFromString(drawnImageBytes);
+
+                            loadingFinished();
+
+                            setState(() {
+                              editedImageFile = File(newPath);
+                            });
+
+                            // showModalBottomSheet(
+                            //     context: context,
+                            //     builder: (context) {
+                            //       // return ColorPicker(300);
+                            //       return SizedBox(
+                            //         height: 70,
+                            //         child: ListView(
+                            //           children: [
+                            //             ListviewElements(
+                            //                 icon: Icons.brush,
+                            //                 text: 'Draw',
+                            //                 onPressed: () {}),
+                            //             ListviewElements(
+                            //                 icon: Icons.brush,
+                            //                 text: 'Draw',
+                            //                 onPressed: () {}),
+                            //           ],
+                            //         ),
+                            //       );
+                            //     });
+                          },
+                        ),
+                        ListViewElements(
+                          icon: Icons.star_border_purple500_outlined,
+                          text: 'Special',
+                          onPressed: () async {
+                            await createSpecialsElements(
+                                context, featuresHelper, editedImageFile.path);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
+  }
+
+  void loadingFinished() {
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void startLoading() {
+    setState(() {
+      isLoading = true;
+    });
   }
 
   Future<String> _createFileFromString(Uint8List bytes) async {
@@ -337,9 +377,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.remove,
                     text: 'Remove BG',
                     onPressed: () async {
+                      startLoading();
+
                       Uint8List bytes = await helper.removeBackground(path);
 
                       String newPath = await _createFileFromString(bytes);
+
+                      loadingFinished();
 
                       setState(() {
                         editedImageFile = File(newPath);
@@ -350,9 +394,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.face_outlined,
                     text: 'Face Cutout',
                     onPressed: () async {
+                      startLoading();
+
                       Uint8List bytes = await helper.cutoutFace(path);
 
                       String newPath = await _createFileFromString(bytes);
+
+                      loadingFinished();
 
                       setState(() {
                         editedImageFile = File(newPath);
@@ -363,9 +411,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.color_lens_outlined,
                     text: 'Correct Color',
                     onPressed: () async {
+                      startLoading();
+
                       Uint8List bytes = await helper.correctColor(path);
 
                       String newPath = await _createFileFromString(bytes);
+
+                      loadingFinished();
 
                       setState(() {
                         editedImageFile = File(newPath);
@@ -376,9 +428,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.photo_camera_front_outlined,
                     text: 'Make Passport',
                     onPressed: () async {
+                      startLoading();
+
                       Uint8List bytes = await helper.passportPhotoMethod(path);
 
                       String newPath = await _createFileFromString(bytes);
+
+                      loadingFinished();
 
                       setState(() {
                         editedImageFile = File(newPath);
@@ -389,9 +445,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.image_outlined,
                     text: 'Image Retouch',
                     onPressed: () async {
+                      startLoading();
+
                       Uint8List bytes = await helper.retouchImage(path);
 
                       String newPath = await _createFileFromString(bytes);
+
+                      loadingFinished();
 
                       setState(() {
                         editedImageFile = File(newPath);
@@ -409,9 +469,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.perm_identity_outlined,
                     text: 'Enhance Photo',
                     onPressed: () async {
+                      startLoading();
+
                       Uint8List bytes = await helper.photoEnhancerMethod(path);
 
                       String newPath = await _createFileFromString(bytes);
+
+                      loadingFinished();
 
                       setState(() {
                         editedImageFile = File(newPath);
@@ -422,9 +486,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.perm_identity_outlined,
                     text: 'Colorize Photo',
                     onPressed: () async {
+                      startLoading();
+
                       Uint8List bytes = await helper.photoColorizerMethod(path);
 
                       String newPath = await _createFileFromString(bytes);
+
+                      loadingFinished();
 
                       setState(() {
                         editedImageFile = File(newPath);
@@ -452,9 +520,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '0',
                 buttonImage: Image.asset('assets/images/image0.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 0);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -464,9 +536,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '1',
                 buttonImage: Image.asset('assets/images/image1.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 1);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -476,9 +552,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '2',
                 buttonImage: Image.asset('assets/images/image2.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 2);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -488,9 +568,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '3',
                 buttonImage: Image.asset('assets/images/image3.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 3);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -500,9 +584,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '4',
                 buttonImage: Image.asset('assets/images/image4.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 4);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -512,9 +600,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '5',
                 buttonImage: Image.asset('assets/images/image5.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 5);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -524,9 +616,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '6',
                 buttonImage: Image.asset('assets/images/image6.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 6);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -536,9 +632,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '7',
                 buttonImage: Image.asset('assets/images/image7.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 7);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -548,9 +648,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '8',
                 buttonImage: Image.asset('assets/images/image8.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 8);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -560,9 +664,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '9',
                 buttonImage: Image.asset('assets/images/image9.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 9);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
@@ -572,9 +680,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 buttonName: '10',
                 buttonImage: Image.asset('assets/images/image10.jpg'),
                 onPressed: () async {
+                  startLoading();
+
                   Uint8List bytes = await helper.cartoonSelfieMethod(path, 10);
 
                   String newPath = await _createFileFromString(bytes);
+
+                  loadingFinished();
 
                   setState(() {
                     editedImageFile = File(newPath);
