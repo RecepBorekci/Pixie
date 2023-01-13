@@ -191,11 +191,14 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       ),
       backgroundColor: Colors.white,
       body: Screenshot(
-        controller: _ssController,
+        controller: screenshotController,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(fit: FlexFit.tight, child: Container()),
+            Flexible(
+              fit: FlexFit.tight,
+              child: Image.file(editedImageFile),
+            ),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
               color: Colors.orange,
@@ -248,12 +251,20 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.text_fields_outlined,
                     text: 'Text',
                     onPressed: () async {
-                      Navigator.of(context).push(
+                      Uint8List writtenImageBytes =
+                          await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
                               AddTextScreen(fileToAddText: editedImageFile),
                         ),
                       );
+
+                      String newPath =
+                          await _createFileFromString(writtenImageBytes);
+
+                      setState(() {
+                        editedImageFile = File(newPath);
+                      });
 
                       // setState(() {
                       //   editedImageFile = editedImageFile;
