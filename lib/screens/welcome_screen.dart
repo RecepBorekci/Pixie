@@ -24,6 +24,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   User? loggedInUser;
 
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -123,23 +125,36 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       right: BorderSide(),
                       top: BorderSide(),
                     )),
-                child: ListTile(
-                  onTap: () {
-                    _auth.signOut();
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                  leading: const Icon(
-                    Icons.logout_outlined,
-                    color: Palette.darkTextColor,
-                  ),
-                  title: const Text(
-                    "Log Out",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  tileColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                ),
+                child: isLoading
+                    ? CircularProgressIndicator()
+                    : ListTile(
+                        onTap: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          await _auth.signOut();
+
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        },
+                        leading: const Icon(
+                          Icons.logout_outlined,
+                          color: Palette.darkTextColor,
+                        ),
+                        title: const Text(
+                          "Log Out",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        tileColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
               ),
             ),
             const Center(

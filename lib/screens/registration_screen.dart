@@ -16,6 +16,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final tagForAnimation = 'logo in the opening';
 
+  bool isLoading = false;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -108,14 +110,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ElevatedButton(
               onPressed: () async {
                 try {
+                  setState(() {
+                    isLoading = true;
+                  });
+
                   final result = await _auth.createUserWithEmailAndPassword(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
+
+                  setState(() {
+                    isLoading = false;
+                  });
+
                   if (result != null) {
                     print('success');
                     User? user = result.user;
                     await user!.updateDisplayName(usernameController.text);
+
                     // ignore: use_build_context_synchronously
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
