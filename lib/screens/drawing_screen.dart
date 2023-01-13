@@ -12,6 +12,8 @@ import 'package:photo_editor/models/palette.dart';
 import 'package:photo_editor/screens/color_picker.dart';
 import 'package:screenshot/screenshot.dart';
 
+import 'package:photo_editor/utils/chosen_color.dart';
+
 class DrawingScreen extends StatefulWidget {
   const DrawingScreen(this.image, this.imageHeight, this.imageWidth);
 
@@ -29,8 +31,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
   GlobalKey _globalKey = new GlobalKey();
   ScreenshotController _screenshotController = ScreenshotController();
 
-  PainterController _controller = _newController();
-
   ui.Image? imageInfo;
   late double aspectRatio;
 
@@ -38,6 +38,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     PainterController controller = new PainterController();
     controller.thickness = 5.0;
     controller.backgroundColor = Colors.transparent;
+    controller.drawColor = Colors.black;
     return controller;
   }
 
@@ -46,6 +47,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     super.initState();
     drawImage = widget.image;
     aspectRatio = widget.imageWidth / widget.imageHeight;
+    ChosenColor.painterController = _newController();
   }
 
   Future<Image> convertToWidget(ui.Image uiimage) async {
@@ -62,13 +64,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              if (_controller.isEmpty) {
+              if (ChosenColor.painterController.isEmpty) {
                 showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) =>
                         new Text('Nothing to undo'));
               } else {
-                _controller.undo();
+                ChosenColor.painterController.undo();
               }
             },
             icon: Icon(Icons.undo),
@@ -76,7 +78,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           IconButton(
               icon: new Icon(Icons.delete),
               tooltip: 'Clear',
-              onPressed: _controller.clear),
+              onPressed: ChosenColor.painterController.clear),
           IconButton(
               icon: new Icon(Icons.check),
               onPressed: () async {
@@ -92,7 +94,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
             controller: _screenshotController,
             child: ImageDrawing(
               drawImage: drawImage,
-              controller: _controller,
+              controller: ChosenColor.painterController,
               colorPicker: colorPicker,
               aspectRatio: aspectRatio,
             ),

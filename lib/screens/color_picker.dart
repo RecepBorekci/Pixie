@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:photo_editor/utils/chosen_color.dart';
 
 void main() {
   runApp(MyApp());
@@ -94,6 +95,8 @@ class _ColorPickerState extends State<ColorPicker> {
       _colorSliderPosition = position;
       _currentColor = _calculateSelectedColor(_colorSliderPosition);
       _shadedColor = _calculateShadedColor(_shadeSliderPosition);
+      // ChosenColor.chosenColor = _shadedColor;
+      // ChosenColor.painterController.drawColor = _shadedColor;
     });
   }
 
@@ -183,6 +186,14 @@ class _ColorPickerState extends State<ColorPicker> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: _shadedColor,
+            shape: BoxShape.circle,
+          ),
+        ),
         Center(
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -192,6 +203,7 @@ class _ColorPickerState extends State<ColorPicker> {
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
               _colorChangeHandler(details.localPosition.dx);
+              ChosenColor.painterController.drawColor = _shadedColor;
             },
             onTapDown: (TapDownDetails details) {
               _colorChangeHandler(details.localPosition.dx);
@@ -224,6 +236,7 @@ class _ColorPickerState extends State<ColorPicker> {
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
               _shadeChangeHandler(details.localPosition.dx);
+              ChosenColor.painterController.drawColor = _shadedColor;
             },
             onTapDown: (TapDownDetails details) {
               _shadeChangeHandler(details.localPosition.dx);
@@ -248,14 +261,6 @@ class _ColorPickerState extends State<ColorPicker> {
             ),
           ),
         ),
-        // Container(
-        //   height: 50,
-        //   width: 50,
-        //   decoration: BoxDecoration(
-        //     color: _shadedColor,
-        //     shape: BoxShape.circle,
-        //   ),
-        // )
       ],
     );
   }
