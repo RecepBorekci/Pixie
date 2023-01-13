@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_editor/screens/add_text_screen.dart';
 import 'package:photo_editor/screens/color_picker.dart';
 import 'package:photo_editor/screens/drawing_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
@@ -56,6 +57,8 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
   late String imageURL;
+
+  ScreenshotController _ssController = ScreenshotController();
 
   PainterController _controller = _newController();
 
@@ -188,65 +191,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       ),
       backgroundColor: Colors.white,
       body: Screenshot(
-        controller: screenshotController,
+        controller: _ssController,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(
-              fit: FlexFit.tight,
-              child: Stack(
-                children: [
-                  Image.file(editedImageFile),
-                  for (int i = 0; i < texts.length; i++)
-                    Positioned(
-                      left: texts[i].left,
-                      top: texts[i].top,
-                      child: GestureDetector(
-                        onLongPress: () {
-                          setState(() {
-                            currentIndex = i;
-                            removeText(context);
-                          });
-                        },
-                        onTap: () async {
-                          setCurrentIndex(context, i);
-                          await createTextElements(
-                              context, featuresHelper, editedImageFile.path);
-                        },
-                        //onTap: () => setCurrentIndex(context, i),
-                        child: Draggable(
-                          feedback: ImageText(textInfo: texts[i]),
-                          child: ImageText(textInfo: texts[i]),
-                          onDragEnd: (drag) {
-                            final renderBox =
-                                context.findRenderObject() as RenderBox;
-                            Offset off = renderBox.globalToLocal(drag.offset);
-                            setState(() {
-                              texts[i].top = off.dy - 88;
-                              texts[i].left = off.dx;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  creatorText.text.isNotEmpty
-                      ? Positioned(
-                          left: 0,
-                          bottom: 0,
-                          child: Text(
-                            creatorText.text,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(
-                                  0.3,
-                                )),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ],
-              ),
-            ),
+            Flexible(fit: FlexFit.tight, child: Container()),
             Container(
               height: MediaQuery.of(context).size.height * 0.08,
               color: Colors.orange,
@@ -299,11 +248,17 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     icon: Icons.text_fields_outlined,
                     text: 'Text',
                     onPressed: () async {
-                      setState(() {
-                        editedImageFile = editedImageFile;
-                      });
-                      await createTextElements(
-                          context, featuresHelper, editedImageFile.path);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AddTextScreen(fileToAddText: editedImageFile),
+                        ),
+                      );
+
+                      // setState(() {
+                      //   editedImageFile = editedImageFile;
+                      // });
+                      // await createTextElements(context, editedImageFile.path);
                     },
                   ),
                   ListviewElements(
@@ -368,8 +323,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     return file.path;
   }
 
-  createTextElements(
-      BuildContext context, CutOutProFeatures helper, String path) async {
+  createTextElements(BuildContext context, String path) async {
     showModalBottomSheet(
         barrierColor: Colors.white.withOpacity(0),
         isScrollControlled: true,
