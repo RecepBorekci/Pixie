@@ -8,7 +8,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_editor/screens/add_text_screen.dart';
 import 'package:photo_editor/screens/color_picker.dart';
 import 'package:photo_editor/screens/drawing_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
@@ -32,9 +31,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:painter/painter.dart';
-
-import '../widgets/image_text.dart';
-import 'finish_screen.dart';
+import "finish_screen.dart";
 
 class PhotoEditingScreen extends StatefulWidget {
   XFile ximage;
@@ -57,8 +54,6 @@ class _PhotoEditingScreenState extends EditImageViewModel {
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
   late String imageURL;
-
-  ScreenshotController _ssController = ScreenshotController();
 
   PainterController _controller = _newController();
 
@@ -250,27 +245,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                   ListviewElements(
                     icon: Icons.text_fields_outlined,
                     text: 'Text',
-                    onPressed: () async {
-                      Uint8List writtenImageBytes =
-                          await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AddTextScreen(fileToAddText: editedImageFile),
-                        ),
-                      );
-
-                      String newPath =
-                          await _createFileFromString(writtenImageBytes);
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-
-                      // setState(() {
-                      //   editedImageFile = editedImageFile;
-                      // });
-                      // await createTextElements(context, editedImageFile.path);
-                    },
+                    onPressed: () {},
                   ),
                   ListviewElements(
                     icon: Icons.color_lens_outlined,

@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:photo_editor/screens/login_screen.dart';
 import 'package:photo_editor/screens/registration_screen.dart';
 import 'package:photo_editor/screens/photo_editing_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import './models/palette.dart';
 
