@@ -1,15 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
+// ignore_for_file: unnecessary_new
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'dart:ui' as ui;
 import 'package:photo_editor/screens/welcome_screen.dart';
 
-import 'package:screenshot/screenshot.dart';
-
 class FinishScreen extends StatelessWidget {
-  const FinishScreen(this.finishedImage);
+  const FinishScreen(this.finishedImage, {super.key});
   final Image finishedImage;
 
   @override
@@ -21,21 +16,21 @@ class FinishScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-                icon: new Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 color: Colors.white,
                 onPressed: Navigator.of(context).pop),
             MaterialButton(
               onPressed: () {},
               child: Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 150,
                     width: 150,
                     child: finishedImage,
                   ),
                   Container(
                     color: Colors.grey.shade800.withOpacity(0.2),
-                    child: Icon(
+                    child: const Icon(
                       color: Colors.grey,
                       Icons.search_outlined,
                       size: 150,
@@ -46,11 +41,11 @@ class FinishScreen extends StatelessWidget {
             ),
 
             IconButton(
-              icon: new Icon(Icons.home),
+              icon: const Icon(Icons.home),
               color: Colors.white,
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return WelcomeScreen();
+                  return const WelcomeScreen();
                 }));
               },
             ),

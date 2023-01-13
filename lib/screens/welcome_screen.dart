@@ -12,6 +12,8 @@ import '../screens/photo_editing_screen.dart';
 import '../widgets/home_buttons.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
@@ -39,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     }
   }
 
-  final List<Icon> recentImages = [Icon(Icons.add)];
+  final List<Icon> recentImages = [const Icon(Icons.add)];
 
   File? image;
   Future pickImage(ImageSource source) async {
@@ -50,6 +52,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       final imageTemporary = File(image.path);
       this.image = imageTemporary;
       setState(() => this.image = imageTemporary);
+      // ignore: use_build_context_synchronously
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PhotoEditingScreen(
           ximage: image,
@@ -88,18 +91,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    border: Border(
-                      bottom: new BorderSide(),
-                      left: new BorderSide(),
-                      right: new BorderSide(),
-                      top: new BorderSide(),
+                    border: const Border(
+                      bottom: BorderSide(),
+                      left: BorderSide(),
+                      right: BorderSide(),
+                      top: BorderSide(),
                     )),
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.language,
                     color: Palette.darkTextColor,
                   ),
-                  title: Text(
+                  title: const Text(
                     "Language",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
@@ -114,22 +117,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    border: Border(
-                      bottom: new BorderSide(),
-                      left: new BorderSide(),
-                      right: new BorderSide(),
-                      top: new BorderSide(),
+                    border: const Border(
+                      bottom: BorderSide(),
+                      left: BorderSide(),
+                      right: BorderSide(),
+                      top: BorderSide(),
                     )),
                 child: ListTile(
                   onTap: () {
                     _auth.signOut();
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   },
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.logout_outlined,
                     color: Palette.darkTextColor,
                   ),
-                  title: Text(
+                  title: const Text(
                     "Log Out",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
@@ -139,7 +142,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ),
             ),
-            Center(
+            const Center(
                 child: Text(
               "Version: 1.5.8-beta",
               style: TextStyle(color: Colors.grey),
@@ -150,7 +153,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       appBar: AppBar(
         backgroundColor: Palette.appBackground,
         foregroundColor: Palette.darkTextColor,
-        systemOverlayStyle: SystemUiOverlayStyle(
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Palette.appBackground,
         ),
         elevation: 0,
@@ -162,7 +165,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Pixie",
                 style: TextStyle(
                     fontFamily: "Courgette",
@@ -175,13 +178,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               Text(
                 "Welcome ${loggedInUser?.displayName ?? "No username"}",
-                style: TextStyle(fontSize: 30),
+                style: const TextStyle(fontSize: 30),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
               Container(
-                padding: EdgeInsets.all(15),
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(20)),
@@ -211,7 +214,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.03,
                     ),
-                    Text(
+                    const Text(
                       "Recent",
                       textAlign: TextAlign.start,
                       style: TextStyle(
@@ -228,7 +231,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Center(
+                            return const Center(
                               child: CircularProgressIndicator(),
                             );
                           }
@@ -265,7 +268,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             child: ListView(
                                 itemExtent: 125.0,
                                 scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 20.0),
                                 children: imageWidgets),
                           );

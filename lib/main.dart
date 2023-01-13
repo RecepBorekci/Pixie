@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:photo_editor/screens/login_screen.dart';
 import 'package:photo_editor/screens/registration_screen.dart';
-import 'package:photo_editor/screens/photo_editing_screen.dart';
 
 import './models/palette.dart';
 
@@ -29,9 +25,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => LoginScreen(),
-        '/registration': (context) => RegistrationScreen(),
-        '/welcome': (context) => WelcomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/registration': (context) => const RegistrationScreen(),
+        '/welcome': (context) => const WelcomeScreen(),
         // '/editing': (context) => PhotoEditingScreen(),
       },
     );

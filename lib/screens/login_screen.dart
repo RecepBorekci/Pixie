@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:photo_editor/screens/registration_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 
+import '../utils/utils.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -20,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Utils.phoneHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
@@ -37,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Text(
+            const Text(
               "Welcome to Pixie!",
               style: TextStyle(
                 fontFamily: "Proxima Nova",
@@ -45,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontSize: 30.0,
               ),
             ),
-            Text(
+            const Text(
               "Let your imagination talk!",
               style: TextStyle(
                 fontFamily: "Proxima Nova",
@@ -58,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: emailOrUsernameController,
               keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.left,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your e-mail.',
                 disabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -78,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: passwordController,
               obscureText: true,
               textAlign: TextAlign.left,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your password',
                 disabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -102,21 +106,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     password: passwordController.text.trim(),
                   );
                   if (user != null) {
+                    // ignore: use_build_context_synchronously
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return WelcomeScreen();
+                      return const WelcomeScreen();
                     }));
                   }
                 } catch (e) {
                   print(e);
                 }
               },
-              child: Text('Log in'),
+              child: const Text('Log in'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Not a member yet?",
                   style: TextStyle(
                     fontFamily: "Proxima Nova",
@@ -127,9 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RegistrationScreen()));
+                        builder: (context) => const RegistrationScreen()));
                   },
-                  child: Text(
+                  child: const Text(
                     "Register now",
                     style: TextStyle(
                       fontFamily: "Proxima Nova",

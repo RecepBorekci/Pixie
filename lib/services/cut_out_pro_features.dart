@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' as Io;
+import 'dart:io' as io;
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 const apiKey = '2327f560a4be4ce7a439dd770bab6128';
@@ -46,7 +46,7 @@ class CutOutProFeatures {
   }
 
   Future<http.Response> uploadImagePassportPhoto(path) async {
-    final bytes = await Io.File(path).readAsBytes();
+    final bytes = await io.File(path).readAsBytes();
 
     String img64 = base64Encode(bytes);
 
@@ -73,7 +73,7 @@ class CutOutProFeatures {
   }
 
   Future<http.Response> uploadImageForImageRetouch(path) async {
-    final bytes = await Io.File(path).readAsBytes();
+    final bytes = await io.File(path).readAsBytes();
 
     String img64 = base64Encode(bytes);
 

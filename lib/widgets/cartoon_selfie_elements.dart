@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../models/palette.dart';
+
 class CartoonSelfieElements extends StatefulWidget {
   final VoidCallback onPressed;
   final Image buttonImage;
   final String buttonName;
 
-  CartoonSelfieElements(
-      {required this.buttonName,
+  const CartoonSelfieElements(
+      {super.key,
+      required this.buttonName,
       required this.buttonImage,
       required this.onPressed});
 
@@ -17,20 +20,26 @@ class CartoonSelfieElements extends StatefulWidget {
 class _CartoonSelfieElementsState extends State<CartoonSelfieElements> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: widget.onPressed,
-      child: Column(
-        children: [
-          CircleAvatar(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25.0),
-              child: widget.buttonImage,
-            ),
-          ),
-          Text(widget.buttonName),
-        ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Palette.purpleLight,
+        border: Border.all(),
       ),
-      style: ButtonStyle(),
+      child: ElevatedButton(
+        onPressed: widget.onPressed,
+        style: const ButtonStyle(),
+        child: Column(
+          children: [
+            CircleAvatar(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(25.0),
+                child: widget.buttonImage,
+              ),
+            ),
+            Text(widget.buttonName),
+          ],
+        ),
+      ),
     );
   }
 }

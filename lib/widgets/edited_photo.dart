@@ -4,7 +4,7 @@ class EditedPhoto extends StatelessWidget {
   final photoURL;
   final timeStamp;
 
-  EditedPhoto({this.photoURL, this.timeStamp});
+  const EditedPhoto({super.key, this.photoURL, this.timeStamp});
 
   @override
   Widget build(BuildContext context) {

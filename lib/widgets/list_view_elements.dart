@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:photo_editor/models/palette.dart';
 
-class ListviewElements extends StatelessWidget {
+class ListViewElements extends StatelessWidget {
   final IconData icon;
   final String text;
   final VoidCallback onPressed;
-  const ListviewElements(
+  const ListViewElements(
       {Key? key,
       required this.icon,
       required this.text,
@@ -33,7 +33,7 @@ class ListviewElements extends StatelessWidget {
             Text(
               text,
             ),
-            SizedBox(
+            const SizedBox(
               height: 3,
               width: 3,
             )

@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter/services.dart';
@@ -15,7 +12,8 @@ import 'package:screenshot/screenshot.dart';
 import 'package:photo_editor/utils/chosen_color.dart';
 
 class DrawingScreen extends StatefulWidget {
-  const DrawingScreen(this.image, this.imageHeight, this.imageWidth);
+  const DrawingScreen(this.image, this.imageHeight, this.imageWidth,
+      {super.key});
 
   final Image image;
   final int imageHeight;
@@ -27,15 +25,14 @@ class DrawingScreen extends StatefulWidget {
 
 class _DrawingScreenState extends State<DrawingScreen> {
   late Image drawImage;
-  ColorPicker colorPicker = ColorPicker(300);
-  GlobalKey _globalKey = new GlobalKey();
-  ScreenshotController _screenshotController = ScreenshotController();
+  ColorPicker colorPicker = const ColorPicker(300);
+  final ScreenshotController _screenshotController = ScreenshotController();
 
   ui.Image? imageInfo;
   late double aspectRatio;
 
   static PainterController _newController() {
-    PainterController controller = new PainterController();
+    PainterController controller = PainterController();
     controller.thickness = 5.0;
     controller.backgroundColor = Colors.transparent;
     controller.drawColor = Colors.black;
@@ -60,7 +57,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Draw"),
+        title: const Text("Draw"),
         actions: [
           IconButton(
             onPressed: () {
@@ -68,28 +65,29 @@ class _DrawingScreenState extends State<DrawingScreen> {
                 showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) =>
-                        new Text('Nothing to undo'));
+                        const Text('Nothing to undo'));
               } else {
                 ChosenColor.painterController.undo();
               }
             },
-            icon: Icon(Icons.undo),
+            icon: const Icon(Icons.undo),
           ),
           IconButton(
-              icon: new Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               tooltip: 'Clear',
               onPressed: ChosenColor.painterController.clear),
           IconButton(
-              icon: new Icon(Icons.check),
+              icon: const Icon(Icons.check),
               onPressed: () async {
                 final imageBytes = await _screenshotController.capture();
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context, imageBytes);
               }),
         ],
       ),
       body: Column(
         children: [
-          Spacer(),
+          const Spacer(),
           Screenshot(
             controller: _screenshotController,
             child: ImageDrawing(
@@ -99,7 +97,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
               aspectRatio: aspectRatio,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Container(color: Palette.purpleLight, child: colorPicker),
         ],
       ),
@@ -137,33 +135,3 @@ class ImageDrawing extends StatelessWidget {
     );
   }
 }
-
-// class Painter extends CustomPainter {
-//   Painter({
-//     required this.drawImage,
-//   });
-//
-//   ui.Image drawImage;
-//
-//   List<Offset> points = [];
-//
-//   final Paint painter = new Paint()
-//     ..color = Colors.blue[400]!
-//     ..style = PaintingStyle.fill;
-//
-//   @override
-//   void update(Offset offset) {
-//     points.add(offset);
-//   }
-//
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     canvas.drawImage(drawImage, Offset(0.0, 0.0), Paint());
-//     for (Offset offset in points) {
-//       canvas.drawCircle(offset, 10, painter);
-//     }
-//   }
-//
-//   @override
-//   bool shouldRepaint(Painter oldDelegate) => false;
-// }
