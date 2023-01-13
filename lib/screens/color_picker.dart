@@ -1,11 +1,13 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:photo_editor/utils/chosen_color.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,9 +18,9 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Color Picker Demo"),
+          title: const Text("Color Picker Demo"),
         ),
-        body: SafeArea(
+        body: const SafeArea(
           child: ColorPicker(300),
         ),
       ),
@@ -43,26 +45,26 @@ class _SliderIndicatorPainter extends CustomPainter {
 
 class ColorPicker extends StatefulWidget {
   final double width;
-  ColorPicker(this.width);
+  const ColorPicker(this.width, {super.key});
   @override
-  _ColorPickerState createState() => _ColorPickerState();
+  ColorPickerState createState() => ColorPickerState();
 }
 
-class _ColorPickerState extends State<ColorPicker> {
+class ColorPickerState extends State<ColorPicker> {
   final List<Color> _colors = [
-    Color.fromARGB(255, 255, 0, 0),
-    Color.fromARGB(255, 255, 128, 0),
-    Color.fromARGB(255, 255, 255, 0),
-    Color.fromARGB(255, 128, 255, 0),
-    Color.fromARGB(255, 0, 255, 0),
-    Color.fromARGB(255, 0, 255, 128),
-    Color.fromARGB(255, 0, 255, 255),
-    Color.fromARGB(255, 0, 128, 255),
-    Color.fromARGB(255, 0, 0, 255),
-    Color.fromARGB(255, 127, 0, 255),
-    Color.fromARGB(255, 255, 0, 255),
-    Color.fromARGB(255, 255, 0, 127),
-    Color.fromARGB(255, 128, 128, 128),
+    const Color.fromARGB(255, 255, 0, 0),
+    const Color.fromARGB(255, 255, 128, 0),
+    const Color.fromARGB(255, 255, 255, 0),
+    const Color.fromARGB(255, 128, 255, 0),
+    const Color.fromARGB(255, 0, 255, 0),
+    const Color.fromARGB(255, 0, 255, 128),
+    const Color.fromARGB(255, 0, 255, 255),
+    const Color.fromARGB(255, 0, 128, 255),
+    const Color.fromARGB(255, 0, 0, 255),
+    const Color.fromARGB(255, 127, 0, 255),
+    const Color.fromARGB(255, 255, 0, 255),
+    const Color.fromARGB(255, 255, 0, 127),
+    const Color.fromARGB(255, 128, 128, 128),
   ];
   double _colorSliderPosition = 0;
   late double _shadeSliderPosition;
@@ -77,19 +79,17 @@ class _ColorPickerState extends State<ColorPicker> {
   initState() {
     super.initState();
     _currentColor = _calculateSelectedColor(_colorSliderPosition);
-    _shadeSliderPosition = widget.width / 2; //center the shader selector
+    _shadeSliderPosition = widget.width / 2;
     _shadedColor = _calculateShadedColor(_shadeSliderPosition);
   }
 
   _colorChangeHandler(double position) {
-    //handle out of bounds positions
     if (position > widget.width) {
       position = widget.width;
     }
     if (position < 0) {
       position = 0;
     }
-    print("New pos: $position");
     setState(() {
       _colorSliderPosition = position;
       _currentColor = _calculateSelectedColor(_colorSliderPosition);
@@ -98,21 +98,17 @@ class _ColorPickerState extends State<ColorPicker> {
   }
 
   _shadeChangeHandler(double position) {
-    //handle out of bounds gestures
     if (position > widget.width) position = widget.width;
     if (position < 0) position = 0;
     setState(() {
       _shadeSliderPosition = position;
       _shadedColor = _calculateShadedColor(_shadeSliderPosition);
-      print(
-          "r: ${_shadedColor.red}, g: ${_shadedColor.green}, b: ${_shadedColor.blue}");
     });
   }
 
   Color _calculateShadedColor(double position) {
     double ratio = position / widget.width;
     if (ratio > 0.5) {
-      //Calculate new color (values converge to 255 to make the color lighter)
       int redVal = _currentColor.red != 255
           ? (_currentColor.red +
                   (255 - _currentColor.red) * (ratio - 0.5) / 0.5)
@@ -130,7 +126,6 @@ class _ColorPickerState extends State<ColorPicker> {
           : 255;
       return Color.fromARGB(255, redVal, greenVal, blueVal);
     } else if (ratio < 0.5) {
-      //Calculate new color (values converge to 0 to make the color darker)
       int redVal = _currentColor.red != 0
           ? (_currentColor.red * ratio / 0.5).round()
           : 0;
@@ -142,23 +137,18 @@ class _ColorPickerState extends State<ColorPicker> {
           : 0;
       return Color.fromARGB(255, redVal, greenVal, blueVal);
     } else {
-      //return the base color
       return _currentColor;
     }
   }
 
   Color _calculateSelectedColor(double position) {
-    //determine color
     double positionInColorArray =
         (position / widget.width * (_colors.length - 1));
-    print(positionInColorArray);
     int index = positionInColorArray.truncate();
-    print(index);
     double remainder = positionInColorArray - index;
     if (remainder == 0.0) {
       _currentColor = _colors[index];
     } else {
-      //calculate new color
       int redValue = _colors[index].red == _colors[index + 1].red
           ? _colors[index].red
           : (_colors[index].red +
@@ -183,23 +173,29 @@ class _ColorPickerState extends State<ColorPicker> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: _shadedColor,
+            shape: BoxShape.circle,
+          ),
+        ),
         Center(
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onHorizontalDragStart: (DragStartDetails details) {
-              print("_-------------------------STARTED DRAG");
               _colorChangeHandler(details.localPosition.dx);
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
               _colorChangeHandler(details.localPosition.dx);
+              ChosenColor.painterController.drawColor = _shadedColor;
             },
             onTapDown: (TapDownDetails details) {
               _colorChangeHandler(details.localPosition.dx);
             },
-            //This outside padding makes it much easier to grab the   slider because the gesture detector has
-            // the extra padding to recognize gestures inside of
             child: Padding(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Container(
                 width: widget.width,
                 height: 15,
@@ -219,19 +215,17 @@ class _ColorPickerState extends State<ColorPicker> {
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onHorizontalDragStart: (DragStartDetails details) {
-              print("_-------------------------STARTED DRAG");
               _shadeChangeHandler(details.localPosition.dx);
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
               _shadeChangeHandler(details.localPosition.dx);
+              ChosenColor.painterController.drawColor = _shadedColor;
             },
             onTapDown: (TapDownDetails details) {
               _shadeChangeHandler(details.localPosition.dx);
             },
-            //This outside padding makes it much easier to grab the slider because the gesture detector has
-            // the extra padding to recognize gestures inside of
             child: Padding(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Container(
                 width: widget.width,
                 height: 15,
@@ -248,14 +242,6 @@ class _ColorPickerState extends State<ColorPicker> {
             ),
           ),
         ),
-        // Container(
-        //   height: 50,
-        //   width: 50,
-        //   decoration: BoxDecoration(
-        //     color: _shadedColor,
-        //     shape: BoxShape.circle,
-        //   ),
-        // )
       ],
     );
   }

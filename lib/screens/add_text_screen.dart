@@ -11,12 +11,12 @@ import 'package:photo_editor/widgets/image_text.dart';
 import '../models/palette.dart';
 import '../utils/utils.dart';
 import '../widgets/default_button.dart';
-import '../widgets/listviewElements.dart';
+import '../widgets/list_view_elements.dart';
 
 class AddTextScreen extends StatefulWidget {
   final File fileToAddText;
 
-  AddTextScreen({required this.fileToAddText});
+  const AddTextScreen({super.key, required this.fileToAddText});
 
   @override
   State<AddTextScreen> createState() => _AddTextScreenState();
@@ -26,7 +26,7 @@ class _AddTextScreenState extends State<AddTextScreen> {
   TextEditingController textEditingController = TextEditingController();
 
   TextEditingController creatorText = TextEditingController();
-  ScreenshotController _ssController = ScreenshotController();
+  final ScreenshotController _ssController = ScreenshotController();
   int currentIndex = 0;
 
   List<TextInfo> texts = [];
@@ -59,7 +59,7 @@ class _AddTextScreenState extends State<AddTextScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
-          'Image Deleted',
+          'Text Deleted',
           style: TextStyle(
             fontSize: 20.0,
           ),
@@ -155,40 +155,19 @@ class _AddTextScreenState extends State<AddTextScreen> {
           actions: <Widget>[
             DefaultButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Back'),
               color: Palette.purpleLight,
               textColor: Colors.black,
+              child: const Text('Back'),
             ),
             DefaultButton(
                 onPressed: () {
                   addNewText(context);
                 },
-                child: const Text('Add Text'),
                 color: Palette.purpleLight,
-                textColor: Colors.black),
+                textColor: Colors.black,
+                child: const Text('Add Text')),
           ]),
     );
-  }
-
-  saveImage(Uint8List bytes) async {
-    final time = DateTime.now()
-        .toIso8601String()
-        .replaceAll('.', '-')
-        .replaceAll(':', '-');
-    final name = "screenshot_$time";
-    await requestPermission(Permission.storage);
-    await ImageGallerySaver.saveImage(bytes, name: name);
-  }
-
-  saveToGallery(BuildContext context) {
-    _ssController.capture().then((Uint8List? image) {
-      saveImage(image!);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Image Saved To Gallery!'),
-        ),
-      );
-    }).catchError((err) => print(err));
   }
 
   @override
@@ -197,7 +176,7 @@ class _AddTextScreenState extends State<AddTextScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Add Text",
         ),
         actions: [
@@ -205,15 +184,16 @@ class _AddTextScreenState extends State<AddTextScreen> {
             onPressed: () async {
               final imageBytes = await _ssController.capture();
 
+              // ignore: use_build_context_synchronously
               Navigator.pop(context, imageBytes);
             },
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
           ),
         ],
       ),
       body: Column(
         children: [
-          Spacer(),
+          const Spacer(),
           Screenshot(
             controller: _ssController,
             child: Stack(
@@ -230,9 +210,8 @@ class _AddTextScreenState extends State<AddTextScreen> {
                           removeText(context);
                         });
                       },
-                      onTap: () async {
+                      onTap: () {
                         setCurrentIndex(context, i);
-                        await createTextElements(context, newFileToWrite.path);
                       },
                       //onTap: () => setCurrentIndex(context, i),
                       child: Draggable(
@@ -243,8 +222,7 @@ class _AddTextScreenState extends State<AddTextScreen> {
                               context.findRenderObject() as RenderBox;
                           Offset off = renderBox.globalToLocal(drag.offset);
                           setState(() {
-                            texts[i].top = off.dy -
-                                MediaQuery.of(context).size.height * 0.35;
+                            texts[i].top = off.dy - Utils.phoneHeight * 0.25;
                             texts[i].left = off.dx;
                           });
                         },
@@ -269,69 +247,69 @@ class _AddTextScreenState extends State<AddTextScreen> {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           SizedBox(
             height: 70,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.text_fields_outlined,
                   text: 'Add Text',
                   onPressed: () async {
                     addNewDialog(context);
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.add,
                   text: 'Font Size',
                   onPressed: () async {
                     increaseFontSize();
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.remove,
                   text: 'Font Size',
                   onPressed: () async {
                     decreaseFontSize();
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.format_align_left,
                   text: 'Align Left',
                   onPressed: () async {
                     alignLeft();
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.format_align_center,
                   text: 'Align Center',
                   onPressed: () async {
                     alignCenter();
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.format_align_right,
                   text: 'Align Right',
                   onPressed: () async {
                     alignRight();
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.format_bold,
                   text: 'Bold',
                   onPressed: () async {
                     boldText();
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.format_italic,
                   text: 'Italic',
                   onPressed: () async {
                     italicText();
                   },
                 ),
-                ListviewElements(
+                ListViewElements(
                   icon: Icons.space_bar,
                   text: 'Add New Line',
                   onPressed: () async {
@@ -480,221 +458,5 @@ class _AddTextScreenState extends State<AddTextScreen> {
         ],
       ),
     );
-  }
-
-  createTextElements(BuildContext context, String path) async {
-    showModalBottomSheet(
-        barrierColor: Colors.white.withOpacity(0),
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(35))),
-        context: context,
-        builder: (context) => SizedBox(
-              height: 70,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ListviewElements(
-                    icon: Icons.text_fields_outlined,
-                    text: 'Add Text',
-                    onPressed: () async {
-                      addNewDialog(context);
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.add,
-                    text: 'Font Size',
-                    onPressed: () async {
-                      increaseFontSize();
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.remove,
-                    text: 'Font Size',
-                    onPressed: () async {
-                      decreaseFontSize();
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.format_align_left,
-                    text: 'Align Left',
-                    onPressed: () async {
-                      alignLeft();
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.format_align_center,
-                    text: 'Align Center',
-                    onPressed: () async {
-                      alignCenter();
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.format_align_right,
-                    text: 'Align Right',
-                    onPressed: () async {
-                      alignRight();
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.format_bold,
-                    text: 'Bold',
-                    onPressed: () async {
-                      boldText();
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.format_italic,
-                    text: 'Italic',
-                    onPressed: () async {
-                      italicText();
-                    },
-                  ),
-                  ListviewElements(
-                    icon: Icons.space_bar,
-                    text: 'Add New Line',
-                    onPressed: () async {
-                      addLinesToText();
-                    },
-                  ),
-                  Tooltip(
-                    message: 'Red',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.red),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.red,
-                          )),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'White',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.white),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.white,
-                          )),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Black',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.black),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.black,
-                          )),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Blue',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.blue),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.blue,
-                          )),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Yellow',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.yellow),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.yellow,
-                          )),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Green',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.green),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.green,
-                          )),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Orange',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.orange),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.orange,
-                          )),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Pink',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Palette.purpleLight,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: 80,
-                      height: 50,
-                      child: GestureDetector(
-                          onTap: () => changeTextColor(Colors.pink),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.pink,
-                          )),
-                    ),
-                  ),
-                ],
-              ),
-            ));
   }
 }

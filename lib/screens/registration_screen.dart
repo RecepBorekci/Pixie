@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
@@ -17,7 +16,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final tagForAnimation = 'logo in the opening';
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
             ),
-            Text(
+            const Text(
               'Register',
               style: TextStyle(
                 fontFamily: "Proxima Nova",
@@ -50,7 +49,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               controller: usernameController,
               autocorrect: true,
               textAlign: TextAlign.left,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your username.',
                 disabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -70,7 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.left,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your e-mail.',
                 disabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -90,7 +89,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               controller: passwordController,
               obscureText: true,
               textAlign: TextAlign.left,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your password',
                 disabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -117,21 +116,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     print('success');
                     User? user = result.user;
                     await user!.updateDisplayName(usernameController.text);
+                    // ignore: use_build_context_synchronously
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return WelcomeScreen();
+                      return const WelcomeScreen();
                     }));
                   }
                 } catch (e) {
                   print('error');
                 }
               },
-              child: Text('Register'),
+              child: const Text('Register'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Already have an account?",
                   style: TextStyle(
                     fontFamily: "Proxima Nova",
@@ -143,7 +143,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     "Log in",
                     style: TextStyle(
                       fontFamily: "Proxima Nova",

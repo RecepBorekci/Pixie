@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// ignore: must_be_immutable
 class HomeButton extends StatelessWidget {
   Function onPressed;
   IconData icon;
@@ -8,6 +9,7 @@ class HomeButton extends StatelessWidget {
   Color foregroundColor, backgroundColor;
   ImageSource? source;
   HomeButton({
+    super.key,
     required this.onPressed,
     this.source,
     required this.icon,
@@ -24,7 +26,7 @@ class HomeButton extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all<Color>(foregroundColor),
           backgroundColor: MaterialStateProperty.all<Color>(backgroundColor)),
       child: MediaQuery.of(context).orientation == Orientation.portrait
-          ? Container(
+          ? SizedBox(
               height: MediaQuery.of(context).size.width * 0.30,
               width: MediaQuery.of(context).size.width * 0.28,
               child: Column(
@@ -35,25 +37,27 @@ class HomeButton extends StatelessWidget {
                     size: MediaQuery.of(context).size.width * 0.14,
                   ),
                   Text(
-                    "$text",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    text,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             )
-          : Container(
+          : SizedBox(
               height: MediaQuery.of(context).size.height * 0.30,
               width: MediaQuery.of(context).size.height * 0.25,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.photo,
                     size: 50,
                   ),
                   Text(
-                    "$text",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    text,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
