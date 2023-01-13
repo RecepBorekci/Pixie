@@ -243,7 +243,8 @@ class _AddTextScreenState extends State<AddTextScreen> {
                               context.findRenderObject() as RenderBox;
                           Offset off = renderBox.globalToLocal(drag.offset);
                           setState(() {
-                            texts[i].top = off.dy - 160;
+                            texts[i].top = off.dy -
+                                MediaQuery.of(context).size.height * 0.35;
                             texts[i].left = off.dx;
                           });
                         },

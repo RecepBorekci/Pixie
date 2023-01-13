@@ -248,14 +248,14 @@ class _ColorPickerState extends State<ColorPicker> {
             ),
           ),
         ),
-        Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            color: _shadedColor,
-            shape: BoxShape.circle,
-          ),
-        )
+        // Container(
+        //   height: 50,
+        //   width: 50,
+        //   decoration: BoxDecoration(
+        //     color: _shadedColor,
+        //     shape: BoxShape.circle,
+        //   ),
+        // )
       ],
     );
   }

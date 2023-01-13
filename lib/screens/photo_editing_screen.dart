@@ -277,9 +277,13 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     text: 'Color',
                     onPressed: () async {
                       Uint8List drawnImageBytes;
+
+                      ui.Image imageInfo = await _getImageInfo();
+
                       drawnImageBytes = await Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
-                        return DrawingScreen(Image.file(editedImageFile));
+                        return DrawingScreen(Image.file(editedImageFile),
+                            imageInfo.height, imageInfo.width);
                       }));
                       String newPath =
                           await _createFileFromString(drawnImageBytes);
@@ -548,6 +552,21 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                 ],
               ),
             ));
+  }
+
+  Future<ui.Image> _getImageInfo() async {
+    Completer<ui.Image> completer = Completer<ui.Image>();
+
+    Image editedImage = Image.file(editedImageFile);
+
+    editedImage.image
+        .resolve(ImageConfiguration())
+        .addListener(ImageStreamListener((ImageInfo image, bool _) {
+      completer.complete(image.image);
+    }));
+    ui.Image info = await completer.future;
+
+    return info;
   }
 
   createSpecialsElements(

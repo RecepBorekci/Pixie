@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -12,9 +13,11 @@ import 'package:photo_editor/screens/color_picker.dart';
 import 'package:screenshot/screenshot.dart';
 
 class DrawingScreen extends StatefulWidget {
-  const DrawingScreen(this.image);
+  const DrawingScreen(this.image, this.imageHeight, this.imageWidth);
 
   final Image image;
+  final int imageHeight;
+  final int imageWidth;
 
   @override
   State<DrawingScreen> createState() => _DrawingScreenState();
@@ -28,6 +31,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   PainterController _controller = _newController();
 
+  ui.Image? imageInfo;
+  late double aspectRatio;
+
   static PainterController _newController() {
     PainterController controller = new PainterController();
     controller.thickness = 5.0;
@@ -39,6 +45,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
   void initState() {
     super.initState();
     drawImage = widget.image;
+    aspectRatio = widget.imageWidth / widget.imageHeight;
   }
 
   Future<Image> convertToWidget(ui.Image uiimage) async {
@@ -78,32 +85,53 @@ class _DrawingScreenState extends State<DrawingScreen> {
               }),
         ],
       ),
-      body: RepaintBoundary(
-        key: _globalKey,
-        child: Stack(
+      body: Column(
+        children: [
+          Spacer(),
+          Screenshot(
+            controller: _screenshotController,
+            child: ImageDrawing(
+              drawImage: drawImage,
+              controller: _controller,
+              colorPicker: colorPicker,
+              aspectRatio: aspectRatio,
+            ),
+          ),
+          Spacer(),
+          Container(color: Palette.purpleLight, child: colorPicker),
+        ],
+      ),
+    );
+  }
+}
+
+class ImageDrawing extends StatelessWidget {
+  const ImageDrawing({
+    Key? key,
+    required this.drawImage,
+    required PainterController controller,
+    required this.colorPicker,
+    required this.aspectRatio,
+  })  : _controller = controller,
+        super(key: key);
+
+  final Image drawImage;
+  final PainterController _controller;
+  final ColorPicker colorPicker;
+  final double aspectRatio;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Stack(
           alignment: Alignment.center,
           children: [
             drawImage,
-            LayoutBuilder(
-              builder: (_, constraints) {
-                return Column(
-                  children: [
-                    Screenshot(
-                      controller: _screenshotController,
-                      child: SizedBox(
-                        height: constraints.maxHeight - 140,
-                        width: constraints.maxWidth - 140,
-                        child: Painter(_controller),
-                      ),
-                    ),
-                    Container(color: Palette.purpleLight, child: colorPicker),
-                  ],
-                );
-              },
-            ),
+            AspectRatio(aspectRatio: aspectRatio, child: Painter(_controller)),
           ],
         ),
-      ),
+      ],
     );
   }
 }
