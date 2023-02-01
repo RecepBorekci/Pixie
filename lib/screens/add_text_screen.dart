@@ -85,23 +85,23 @@ class _AddTextScreenState extends State<AddTextScreen> {
     });
   }
 
-  alignLeft() {
-    setState(() {
-      texts[currentIndex].textAlign = TextAlign.left;
-    });
-  }
-
-  alignCenter() {
-    setState(() {
-      texts[currentIndex].textAlign = TextAlign.center;
-    });
-  }
-
-  alignRight() {
-    setState(() {
-      texts[currentIndex].textAlign = TextAlign.right;
-    });
-  }
+  // alignLeft() {
+  //   setState(() {
+  //     texts[currentIndex].textAlign = TextAlign.left;
+  //   });
+  // }
+  //
+  // alignCenter() {
+  //   setState(() {
+  //     texts[currentIndex].textAlign = TextAlign.center;
+  //   });
+  // }
+  //
+  // alignRight() {
+  //   setState(() {
+  //     texts[currentIndex].textAlign = TextAlign.right;
+  //   });
+  // }
 
   boldText() {
     setState(() {
@@ -180,7 +180,6 @@ class _AddTextScreenState extends State<AddTextScreen> {
           IconButton(
             onPressed: () async {
               final imageBytes = await _ssController.capture();
-
               // ignore: use_build_context_synchronously
               Navigator.pop(context, imageBytes);
             },
@@ -258,6 +257,13 @@ class _AddTextScreenState extends State<AddTextScreen> {
                   },
                 ),
                 ListViewElements(
+                  icon: Icons.color_lens,
+                  text: 'Change Color',
+                  onPressed: () async {
+                    showColorsList(context);
+                  },
+                ),
+                ListViewElements(
                   icon: Icons.add,
                   text: 'Font Size',
                   onPressed: () async {
@@ -269,27 +275,6 @@ class _AddTextScreenState extends State<AddTextScreen> {
                   text: 'Font Size',
                   onPressed: () async {
                     decreaseFontSize();
-                  },
-                ),
-                ListViewElements(
-                  icon: Icons.format_align_left,
-                  text: 'Align Left',
-                  onPressed: () async {
-                    alignLeft();
-                  },
-                ),
-                ListViewElements(
-                  icon: Icons.format_align_center,
-                  text: 'Align Center',
-                  onPressed: () async {
-                    alignCenter();
-                  },
-                ),
-                ListViewElements(
-                  icon: Icons.format_align_right,
-                  text: 'Align Right',
-                  onPressed: () async {
-                    alignRight();
                   },
                 ),
                 ListViewElements(
@@ -313,147 +298,183 @@ class _AddTextScreenState extends State<AddTextScreen> {
                     addLinesToText();
                   },
                 ),
-                Tooltip(
-                  message: 'Red',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.red),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.red,
-                        )),
-                  ),
-                ),
-                Tooltip(
-                  message: 'White',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.white),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.white,
-                        )),
-                  ),
-                ),
-                Tooltip(
-                  message: 'Black',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.black),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.black,
-                        )),
-                  ),
-                ),
-                Tooltip(
-                  message: 'Blue',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.blue),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.blue,
-                        )),
-                  ),
-                ),
-                Tooltip(
-                  message: 'Yellow',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.yellow),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.yellow,
-                        )),
-                  ),
-                ),
-                Tooltip(
-                  message: 'Green',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.green),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.green,
-                        )),
-                  ),
-                ),
-                Tooltip(
-                  message: 'Orange',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.orange),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.orange,
-                        )),
-                  ),
-                ),
-                Tooltip(
-                  message: 'Pink',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Palette.purpleLight,
-                      border: Border.all(),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    width: 80,
-                    height: 50,
-                    child: GestureDetector(
-                        onTap: () => changeTextColor(Colors.pink),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.pink,
-                        )),
-                  ),
-                ),
+                // ListViewElements(
+                //   icon: Icons.format_align_left,
+                //   text: 'Align Left',
+                //   onPressed: () async {
+                //     alignLeft();
+                //   },
+                // ),
+                // ListViewElements(
+                //   icon: Icons.format_align_center,
+                //   text: 'Align Center',
+                //   onPressed: () async {
+                //     alignCenter();
+                //   },
+                // ),
+                // ListViewElements(
+                //   icon: Icons.format_align_right,
+                //   text: 'Align Right',
+                //   onPressed: () async {
+                //     alignRight();
+                //   },
+                // ),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  Future<dynamic> showColorsList(BuildContext context) {
+    return showModalBottomSheet(
+                      barrierColor: Colors.transparent,
+                      context: context, builder: (context) =>
+                      SizedBox(
+                          height: 70,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Tooltip(
+                              message: 'Red',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.red),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                    )),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'White',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.white),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                    )),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'Black',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.black),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.black,
+                                    )),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'Blue',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.blue),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.blue,
+                                    )),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'Yellow',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.yellow),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.yellow,
+                                    )),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'Green',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.green),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.green,
+                                    )),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'Orange',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.orange),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.orange,
+                                    )),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'Pink',
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.purpleLight,
+                                  border: Border.all(),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                width: 80,
+                                height: 50,
+                                child: GestureDetector(
+                                    onTap: () => changeTextColor(Colors.pink),
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.pink,
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                  );
   }
 }

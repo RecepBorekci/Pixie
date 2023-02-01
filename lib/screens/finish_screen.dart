@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'welcome_screen.dart';
 import '../models/share_buttons.dart';
 
 class FinishScreen extends StatefulWidget {
@@ -76,10 +75,7 @@ class _FinishScreenState extends State<FinishScreen> {
                               ),
                               color: Colors.white,
                               onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return WelcomeScreen();
-                                }));
+                                Navigator.popUntil(context, ModalRoute.withName('/welcome'));
                               },
                             ),
                           ),

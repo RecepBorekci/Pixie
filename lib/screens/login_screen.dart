@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:photo_editor/screens/registration_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 
@@ -22,6 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
 
   bool isLoading = false;
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,10 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       if (user != null) {
                         // ignore: use_build_context_synchronously
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const WelcomeScreen();
-                        }));
+                        Navigator.pushNamed(context, '/welcome');
                       }
                     } catch (e) {
                       print(e);

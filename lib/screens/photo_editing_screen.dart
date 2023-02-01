@@ -64,6 +64,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
       context,
       new MaterialPageRoute(
         builder: (context) => new PhotoFilterSelector(
+          appBarColor: Palette.purpleLight.shade900,
           title: const Text("Select Filter"),
           image: image!,
           filters: presetFiltersList,
@@ -99,8 +100,8 @@ class _PhotoEditingScreenState extends EditImageViewModel {
             AndroidUiSettings(
               toolbarTitle: 'Crop Image',
               lockAspectRatio: false,
-              statusBarColor: Palette.purpleLight.shade400,
-              toolbarColor: Palette.purpleLight.shade600,
+              statusBarColor: Colors.transparent,
+              toolbarColor: Palette.purpleLight.shade900,
               toolbarWidgetColor: Colors.white,
               backgroundColor: Palette.appBackground,
               cropFrameColor: Palette.purpleLight.shade900,
@@ -147,22 +148,27 @@ class _PhotoEditingScreenState extends EditImageViewModel {
               color: Colors.white,
             ),
             onPressed: () async {
-              await GallerySaver.saveImage(editedImageFile.path);
-              final ref = _storage
-                  .ref()
-                  .child("user_images")
-                  .child("${DateTime.now()}jpg");
-              await ref.putFile(editedImageFile);
-              imageURL = await ref.getDownloadURL();
-              _firestore.collection("edited_photos").add({
-                "id": _auth.currentUser!.uid,
-                "email": _auth.currentUser!.email,
-                "username": _auth.currentUser!.displayName,
-                "photoURL": imageURL,
-                "createdAt": FieldValue.serverTimestamp(),
-              });
+              try {
+                final ref = _storage
+                                  .ref()
+                                  .child("user_images")
+                                  .child("${DateTime.now()}jpg");
+                await ref.putFile(editedImageFile);
+                imageURL = await ref.getDownloadURL();
+                _firestore.collection("edited_photos").add({
+                                "id": _auth.currentUser!.uid,
+                                "email": _auth.currentUser!.email,
+                                "username": _auth.currentUser!.displayName,
+                                "photoURL": imageURL,
+                                "createdAt": FieldValue.serverTimestamp(),
+                              });
+              } catch (e) {
+                print(e);
+              } finally {
+                await GallerySaver.saveImage(editedImageFile.path);
+              }
               const snackBar = SnackBar(
-                content: Text('Image Saved'),
+                content: Text('Image Saved to Gallery'),
                 duration: Duration(seconds: 2),
                 backgroundColor: Colors.black38,
               );
@@ -255,11 +261,6 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                             setState(() {
                               editedImageFile = File(newPath);
                             });
-
-                            // setState(() {
-                            //   editedImageFile = editedImageFile;
-                            // });
-                            // await createTextElements(context, editedImageFile.path);
                           },
                         ),
                         ListViewElements(
@@ -286,32 +287,11 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                             setState(() {
                               editedImageFile = File(newPath);
                             });
-
-                            // showModalBottomSheet(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       // return ColorPicker(300);
-                            //       return SizedBox(
-                            //         height: 70,
-                            //         child: ListView(
-                            //           children: [
-                            //             ListviewElements(
-                            //                 icon: Icons.brush,
-                            //                 text: 'Draw',
-                            //                 onPressed: () {}),
-                            //             ListviewElements(
-                            //                 icon: Icons.brush,
-                            //                 text: 'Draw',
-                            //                 onPressed: () {}),
-                            //           ],
-                            //         ),
-                            //       );
-                            //     });
                           },
                         ),
                         ListViewElements(
                           icon: Icons.star_border_purple500_outlined,
-                          text: 'Special',
+                          text: 'Cutout Pro',
                           onPressed: () async {
                             await createSpecialsElements(
                                 context, featuresHelper, editedImageFile.path);
@@ -466,7 +446,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     },
                   ),
                   ListViewElements(
-                    icon: Icons.perm_identity_outlined,
+                    icon: Icons.enhance_photo_translate,
                     text: 'Enhance Photo',
                     onPressed: () async {
                       startLoading();
@@ -483,7 +463,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                     },
                   ),
                   ListViewElements(
-                    icon: Icons.perm_identity_outlined,
+                    icon: Icons.color_lens_outlined,
                     text: 'Colorize Photo',
                     onPressed: () async {
                       startLoading();

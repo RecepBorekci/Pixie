@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Palette.purpleLight,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Palette.purpleLight.shade900,
+        ),
         fontFamily: "Nunito",
       ),
       initialRoute: '/login',
