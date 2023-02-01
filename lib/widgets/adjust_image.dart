@@ -3,7 +3,7 @@ import 'package:image/image.dart' as img;
 import 'dart:io';
 import 'dart:math';
 
-import 'listviewElements.dart';
+import 'list_view_elements.dart';
 
 class AdjustImage extends StatefulWidget {
   File editedImageFile;
@@ -49,7 +49,7 @@ class _AdjustImageState extends State<AdjustImage> {
     return SizedBox(
       height: 70,
       child: ListView(scrollDirection: Axis.horizontal, children: [
-        ListviewElements(
+        ListViewElements(
             icon: Icons.contrast,
             text: 'Contrast',
             onPressed: () {

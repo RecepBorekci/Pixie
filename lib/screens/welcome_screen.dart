@@ -279,7 +279,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           }
 
                           return SizedBox(
-                            height: 300,
+                            height: 280,
                             child: ListView(
                                 itemExtent: 125.0,
                                 scrollDirection: Axis.horizontal,

@@ -1,9 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_editor/models/text_info.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:photo_editor/widgets/image_text.dart';
