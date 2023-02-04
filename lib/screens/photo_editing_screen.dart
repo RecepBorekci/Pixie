@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_editor/screens/add_text_screen.dart';
 import 'package:photo_editor/screens/drawing_screen.dart';
+import 'package:photo_editor/screens/specials_screen.dart';
 import 'package:photo_editor/screens/welcome_screen.dart';
 import 'package:photo_editor/services/cut_out_pro_features.dart';
 import 'dart:io';
@@ -118,8 +119,6 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     }
     return null;
   }
-
-  CutOutProFeatures featuresHelper = CutOutProFeatures();
 
   String imageData = '';
 
@@ -294,8 +293,10 @@ class _PhotoEditingScreenState extends EditImageViewModel {
                           icon: Icons.star_border_purple500_outlined,
                           text: 'Cutout Pro',
                           onPressed: () async {
-                            await createSpecialsElements(
-                                context, featuresHelper, editedImageFile.path);
+                            editedImageFile = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => SpecialsScreen(fileToAddFeature: editedImageFile,),),);
+                            setState(() {
+
+                            });
                           },
                         ),
                       ],
@@ -307,15 +308,15 @@ class _PhotoEditingScreenState extends EditImageViewModel {
     );
   }
 
-  void loadingFinished() {
-    setState(() {
-      isLoading = false;
-    });
-  }
-
   void startLoading() {
     setState(() {
       isLoading = true;
+    });
+  }
+
+  void loadingFinished() {
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -340,358 +341,4 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 
     return info;
   }
-
-  createSpecialsElements(
-      BuildContext context, CutOutProFeatures helper, String path) async {
-    showModalBottomSheet(
-        barrierColor: Colors.white.withOpacity(0),
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(35))),
-        context: context,
-        builder: (context) => SizedBox(
-              height: 70,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ListViewElements(
-                    icon: Icons.remove,
-                    text: 'Remove BG',
-                    onPressed: () async {
-                      startLoading();
-
-                      Uint8List bytes = await helper.removeBackground(path);
-
-                      String newPath = await _createFileFromString(bytes);
-
-                      loadingFinished();
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.face_outlined,
-                    text: 'Face Cutout',
-                    onPressed: () async {
-                      startLoading();
-
-                      Uint8List bytes = await helper.cutoutFace(path);
-
-                      String newPath = await _createFileFromString(bytes);
-
-                      loadingFinished();
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.color_lens_outlined,
-                    text: 'Correct Color',
-                    onPressed: () async {
-                      startLoading();
-
-                      Uint8List bytes = await helper.correctColor(path);
-
-                      String newPath = await _createFileFromString(bytes);
-
-                      loadingFinished();
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.photo_camera_front_outlined,
-                    text: 'Make Passport',
-                    onPressed: () async {
-                      startLoading();
-
-                      Uint8List bytes = await helper.passportPhotoMethod(path);
-
-                      String newPath = await _createFileFromString(bytes);
-
-                      loadingFinished();
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.image_outlined,
-                    text: 'Image Retouch',
-                    onPressed: () async {
-                      startLoading();
-
-                      Uint8List bytes = await helper.retouchImage(path);
-
-                      String newPath = await _createFileFromString(bytes);
-
-                      loadingFinished();
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.perm_identity_outlined,
-                    text: 'Cartoon Selfie',
-                    onPressed: () async {
-                      await createCartoonSelfieElements(context, helper, path);
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.enhance_photo_translate,
-                    text: 'Enhance Photo',
-                    onPressed: () async {
-                      startLoading();
-
-                      Uint8List bytes = await helper.photoEnhancerMethod(path);
-
-                      String newPath = await _createFileFromString(bytes);
-
-                      loadingFinished();
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-                    },
-                  ),
-                  ListViewElements(
-                    icon: Icons.color_lens_outlined,
-                    text: 'Colorize Photo',
-                    onPressed: () async {
-                      startLoading();
-
-                      Uint8List bytes = await helper.photoColorizerMethod(path);
-
-                      String newPath = await _createFileFromString(bytes);
-
-                      loadingFinished();
-
-                      setState(() {
-                        editedImageFile = File(newPath);
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ));
-  }
-
-  createCartoonSelfieElements(
-      BuildContext context, CutOutProFeatures helper, String path) async {
-    showModalBottomSheet(
-      barrierColor: Colors.white.withOpacity(0),
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(),
-      context: context,
-      builder: (context) => SizedBox(
-        height: 70,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            CartoonSelfieElements(
-                buttonName: '0',
-                buttonImage: Image.asset('assets/images/image0.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 0);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '1',
-                buttonImage: Image.asset('assets/images/image1.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 1);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '2',
-                buttonImage: Image.asset('assets/images/image2.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 2);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '3',
-                buttonImage: Image.asset('assets/images/image3.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 3);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '4',
-                buttonImage: Image.asset('assets/images/image4.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 4);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '5',
-                buttonImage: Image.asset('assets/images/image5.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 5);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '6',
-                buttonImage: Image.asset('assets/images/image6.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 6);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '7',
-                buttonImage: Image.asset('assets/images/image7.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 7);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '8',
-                buttonImage: Image.asset('assets/images/image8.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 8);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '9',
-                buttonImage: Image.asset('assets/images/image9.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 9);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-            CartoonSelfieElements(
-                buttonName: '10',
-                buttonImage: Image.asset('assets/images/image10.jpg'),
-                onPressed: () async {
-                  startLoading();
-
-                  Uint8List bytes = await helper.cartoonSelfieMethod(path, 10);
-
-                  String newPath = await _createFileFromString(bytes);
-
-                  loadingFinished();
-
-                  setState(() {
-                    editedImageFile = File(newPath);
-                  });
-                }),
-          ],
-        ),
-      ),
-    );
-  }
 }
-
-// background removal (1 Credits)
-
-// face cutout (1 Credits)
-
-// color correction (1 Credits)
-
-// passport photo (1 Credits)
-
-// image retouch. (1 Credits)
-
-// cartoon selfie (2 CREDITS)
-
-// photo enhancer (2 CREDITS)
-
-// photo colorizer (2 CREDITS)
