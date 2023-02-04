@@ -55,6 +55,7 @@ class _PhotoEditingScreenState extends EditImageViewModel {
 
   bool isLoading = false;
 
+
   List<Filter> filters = presetFiltersList;
   Future<void> getImage(context) async {
     fileName = basename(widget.imageFile.path);

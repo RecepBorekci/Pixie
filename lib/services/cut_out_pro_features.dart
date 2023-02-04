@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:typed_data';
+import 'package:photo_editor/utils/secrets.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
-
-const apiKey = '2327f560a4be4ce7a439dd770bab6128';
 
 const cutOutProUrl = 'https://www.cutout.pro/api/v1/';
 const backgroundRemoval = 'matting?mattingType=6';
